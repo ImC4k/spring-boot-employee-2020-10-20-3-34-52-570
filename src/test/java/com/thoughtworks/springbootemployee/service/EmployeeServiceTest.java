@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -60,5 +61,30 @@ class EmployeeServiceTest {
         //then
         assertNotEquals(expected, actual);
         assertNull(actual);
+    }
+
+    @Test
+    void should_return_3_employees_when_getAllEmployeesWithPagination_given_employees_list_is_longer_than_3_and_pageNumber_is_1_and_pageSize_is_3() {
+        //given
+        List<Employee> allEmployees = new ArrayList<>();
+        Employee employee1 = new Employee("1", "test", 16, "male", 1000);
+        Employee employee2 = new Employee("2", "test", 16, "male", 1000);
+        Employee employee3 = new Employee("3", "test", 16, "male", 1000);
+        Employee employee4 = new Employee("4", "test", 16, "male", 1000);
+        allEmployees.add(employee1);
+        allEmployees.add(employee2);
+        allEmployees.add(employee3);
+        allEmployees.add(employee4);
+
+        when(employeeRepository.findAll()).thenReturn(allEmployees);
+
+        //when
+        List<Employee> actual = employeeService.getWithPagination(1, 3);
+
+        //then
+        assertEquals(3, actual.size());
+        assertEquals("1", actual.get(0).getId());
+        assertEquals("2", actual.get(1).getId());
+        assertEquals("3", actual.get(2).getId());
     }
 }

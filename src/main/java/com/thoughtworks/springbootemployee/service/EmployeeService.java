@@ -21,4 +21,8 @@ public class EmployeeService {
     public Employee getOne(String id) {
         return employeeRepository.findOne(id);
     }
+
+    public List<Employee> getWithPagination(int pageNumber, int pageSize) {
+        return null;
+    }
 }
