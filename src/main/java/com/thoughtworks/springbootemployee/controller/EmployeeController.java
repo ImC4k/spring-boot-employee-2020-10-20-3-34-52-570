@@ -5,7 +5,6 @@ import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -14,8 +13,6 @@ import java.util.List;
 public class EmployeeController {
 
     @Autowired private EmployeeService employeeService;
-
-    private final List<Employee> employees = new ArrayList<>();
 
     @GetMapping
     public List<Employee> getAll() {
@@ -31,7 +28,6 @@ public class EmployeeController {
     public List<Employee> getWithPaging(@RequestParam("page") Integer pageNumber, @RequestParam("pageSize") Integer pageSize) {
         return employeeService.getWithPagination(pageNumber, pageSize);
     }
-
 
     @GetMapping(params = {"gender"})
     public List<Employee> getWithGenderFilter(@RequestParam("gender") String gender) {
