@@ -10,7 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,7 +40,7 @@ class EmployeeServiceTest {
     @Test
     void should_return_all_employees_when_getAll_given_all_employees() {
         //given
-        final List<Employee> expected = Arrays.asList(new Employee("123", "test", 16, "male", 1000));
+        final List<Employee> expected = Collections.singletonList(new Employee("123", "test", 16, "male", 1000));
         when(employeeRepository.findAll()).thenReturn(expected);
 
         //when
