@@ -17,4 +17,8 @@ public class EmployeeRepository {
     public Employee findOne(String id) {
         return employees.stream().filter(employee -> employee.getId().equals(id)).findFirst().orElse(null);
     }
+
+    public Employee create(Employee expected) {
+        return null;
+    }
 }

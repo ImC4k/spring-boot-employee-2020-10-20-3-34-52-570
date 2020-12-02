@@ -30,4 +30,8 @@ public class EmployeeService {
                 .limit(pageSize)
                 .collect(Collectors.toList());
     }
+
+    public Employee create(Employee newEmployee) {
+        return null;
+    }
 }
