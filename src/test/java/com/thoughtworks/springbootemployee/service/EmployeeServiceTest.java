@@ -156,32 +156,12 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_1_and_have_an_employee_removed_when_remove_given_originally_employees_has_some_employees() {
+    void should_return_1_and_have_an_employee_removed_when_remove() {
         //given
-        List<Employee> allEmployees = createDummyEmployees();
-        when(employeeRepository.findAll()).thenReturn(allEmployees);
-        when(employeeRepository.remove(any())).thenCallRealMethod();
-
         //when
-        int actual = employeeService.remove("1");
+        employeeService.remove("1");
 
         //then
-        assertEquals(1, actual);
-        assertEquals(3, allEmployees.size());
-    }
-
-    @Test
-    void should_return_0_and_employees_unchanged_when_remove_given_originally_employees_has_some_employees_but_id_does_not_exist() {
-        //given
-        List<Employee> allEmployees = createDummyEmployees();
-        when(employeeRepository.findAll()).thenReturn(allEmployees);
-        when(employeeRepository.remove(any())).thenCallRealMethod();
-
-        //when
-        int actual = employeeService.remove("5");
-
-        //then
-        assertEquals(0, actual);
-        assertEquals(4, allEmployees.size());
+        verify(employeeRepository, times(1)).remove("1");
     }
 }
