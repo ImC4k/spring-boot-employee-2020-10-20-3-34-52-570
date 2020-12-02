@@ -37,4 +37,8 @@ public class Employee {
     public Integer getSalary() {
         return salary;
     }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }

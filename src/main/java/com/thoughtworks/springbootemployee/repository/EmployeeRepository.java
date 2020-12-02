@@ -19,7 +19,27 @@ public class EmployeeRepository {
     }
 
     public Employee create(Employee newEmployee) {
-        employees.add(newEmployee);
+        findAll().add(newEmployee);
         return newEmployee;
+    }
+
+    public Employee update(String id, Employee updatedEmployee) {
+        updatedEmployee.setId(id);
+
+        findAll().stream().filter(employee -> employee.getId().equals(id))
+                .findFirst()
+                .ifPresent(employee -> {
+                    employees.remove(employee);
+                    employees.add(updatedEmployee);
+                });
+        return updatedEmployee;
+    }
+
+    public void remove(String id) {
+        findAll().stream().filter(employee -> employee.getId().equals(id))
+                .findFirst()
+                .ifPresent(employee -> {
+                    employees.remove(employee);
+                });
     }
 }

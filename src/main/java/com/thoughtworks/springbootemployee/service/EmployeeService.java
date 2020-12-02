@@ -40,6 +40,8 @@ public class EmployeeService {
     }
 
     public Employee update(String id, Employee updatedEmployee) {
-        return null;
+        employeeRepository.remove(id);
+        updatedEmployee.setId(id);
+        return employeeRepository.create(updatedEmployee);
     }
 }
