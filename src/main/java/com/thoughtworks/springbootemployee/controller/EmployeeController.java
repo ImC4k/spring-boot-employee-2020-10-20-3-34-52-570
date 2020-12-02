@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @RestController
@@ -36,7 +35,7 @@ public class EmployeeController {
 
     @GetMapping(params = {"gender"})
     public List<Employee> getWithGenderFilter(@RequestParam("gender") String gender) {
-        return employees.stream().filter(employee -> employee.getGender().equals(gender)).collect(Collectors.toList());
+        return employeeService.getWithGenderFilter(gender);
     }
 
     @PostMapping
