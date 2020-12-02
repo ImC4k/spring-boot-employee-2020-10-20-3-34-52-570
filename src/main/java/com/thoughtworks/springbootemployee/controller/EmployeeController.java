@@ -15,4 +15,10 @@ public class EmployeeController {
     public List<Employee> getAll() {
         return employees;
     }
+
+    @GetMapping("/{id}")
+    public Employee getOne(@PathVariable String id) {
+        return employees.stream().filter(employee -> employee.getId().equals(id)).findFirst().orElse(null);
+    }
+
 }
