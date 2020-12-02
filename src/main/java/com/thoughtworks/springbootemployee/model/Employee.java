@@ -41,4 +41,16 @@ public class Employee {
     public void setId(String id) {
         this.id = id;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Employee) {
+            return this.id.equals(((Employee) obj).getId()) &&
+                    this.name.equals(((Employee) obj).getName()) &&
+                    this.age.equals(((Employee) obj).getAge()) &&
+                    this.gender.equals(((Employee) obj).getGender()) &&
+                    this.salary.equals(((Employee) obj).getSalary());
+        }
+        return super.equals(obj);
+    }
 }

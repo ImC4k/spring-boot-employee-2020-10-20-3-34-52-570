@@ -130,15 +130,14 @@ class EmployeeServiceTest {
         when(employeeService.remove(any())).thenCallRealMethod();
 
         //when
-        Employee actual = employeeService.update("2", updatedEmployee);
+        employeeService.update("2", updatedEmployee);
+        final ArgumentCaptor<Employee> employeeArgumentCaptor = ArgumentCaptor.forClass(Employee.class);
+        verify(employeeRepository, times(1)).create(employeeArgumentCaptor.capture());
 
         //then
+        final Employee actual = employeeArgumentCaptor.getValue();
         assertNotNull(actual);
-        assertEquals("2", actual.getId());
-        assertEquals("new name", actual.getName());
-        assertEquals(15, actual.getAge());
-        assertEquals("male", actual.getGender());
-        assertEquals(999, actual.getSalary());
+        assertEquals(expected, actual);
     }
 
     @Test
