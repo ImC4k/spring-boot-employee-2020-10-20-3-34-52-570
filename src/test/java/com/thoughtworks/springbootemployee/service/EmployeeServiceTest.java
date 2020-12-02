@@ -123,14 +123,19 @@ class EmployeeServiceTest {
     @Test
     void should_return_updated_employee_when_update_given_new_employee_and_even_though_update_employee_id_mismatch() {
         //given
-        Employee expected = new Employee("3", "new name", 15, "male", 999);
-        when(employeeRepository.update(any(), any())).thenReturn(expected);
+        Employee updatedEmployee = new Employee("3", "new name", 15, "male", 999);
+        Employee expected = new Employee("2", "new name", 15, "male", 999);
+        when(employeeRepository.findAll()).thenReturn(createDummyEmployees());
+        when(employeeRepository.create(any())).thenCallRealMethod();
 
         //when
-        Employee actual = employeeService.update("2", expected);
+        Employee actual = employeeService.update("2", updatedEmployee);
         
         //then
-        assertEquals(expected, actual);
         assertEquals("2", actual.getId());
+        assertEquals("new name", actual.getName());
+        assertEquals(15, actual.getAge());
+        assertEquals("male", actual.getGender());
+        assertEquals(999, actual.getSalary());
     }
 }
