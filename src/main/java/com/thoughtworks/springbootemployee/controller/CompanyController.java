@@ -4,6 +4,8 @@ import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,8 +24,13 @@ public class CompanyController {
     }
 
     @GetMapping("/{id}")
-    public Company getOne(@PathVariable String id) {
-        return companyService.getOne(id);
+    public ResponseEntity<Company> getOne(@PathVariable String id) {
+
+        Company company = companyService.getOne(id);
+        if (company == null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(company, HttpStatus.OK);
     }
 
     @GetMapping(params = {"page", "pageSize"})
