@@ -47,4 +47,8 @@ public class EmployeeService {
         updatedEmployee.setId(id);
         return employeeRepository.create(updatedEmployee);
     }
+
+    public Integer remove(String id) {
+        return null;
+    }
 }
