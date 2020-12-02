@@ -3,12 +3,12 @@ package com.thoughtworks.springbootemployee.model;
 public class Company {
     private String id;
     private String name;
-    private Integer address;
+    private String address;
 
     public Company() {
     }
 
-    public Company(String id, String name, Integer address) {
+    public Company(String id, String name, String address) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -22,7 +22,7 @@ public class Company {
         return name;
     }
 
-    public Integer getAddress() {
+    public String getAddress() {
         return address;
     }
 
