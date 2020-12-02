@@ -49,6 +49,6 @@ public class EmployeeService {
     }
 
     public Integer remove(String id) {
-        return null;
+        return employeeRepository.remove(id);
     }
 }
