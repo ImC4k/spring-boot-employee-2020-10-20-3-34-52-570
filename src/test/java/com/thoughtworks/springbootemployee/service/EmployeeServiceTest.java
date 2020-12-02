@@ -105,7 +105,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_created_employee_when_createEmployee_given_no_employee_in_database_and_a_new_employee() {
+    void should_return_created_employee_when_create_given_no_employee_in_database_and_a_new_employee() {
         //given
         Employee employee = new Employee("123", "test", 15, "male", 10000);
         when(employeeRepository.create(employee)).thenReturn(employee);
