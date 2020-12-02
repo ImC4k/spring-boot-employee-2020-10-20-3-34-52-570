@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class EmployeeRepository {
@@ -23,23 +24,12 @@ public class EmployeeRepository {
         return newEmployee;
     }
 
-    public Employee update(String id, Employee updatedEmployee) {
-        updatedEmployee.setId(id);
-
-        findAll().stream().filter(employee -> employee.getId().equals(id))
-                .findFirst()
-                .ifPresent(employee -> {
-                    employees.remove(employee);
-                    employees.add(updatedEmployee);
-                });
-        return updatedEmployee;
-    }
-
-    public void remove(String id) {
-        findAll().stream().filter(employee -> employee.getId().equals(id))
-                .findFirst()
-                .ifPresent(employee -> {
-                    employees.remove(employee);
-                });
+    public Integer remove(String id) {
+        Employee employeesWithId = findAll().stream().filter(employee -> employee.getId().equals(id)).findFirst().orElse(null);
+        if (employeesWithId == null) {
+            return 0;
+        }
+        findAll().remove(employeesWithId);
+        return 1;
     }
 }
