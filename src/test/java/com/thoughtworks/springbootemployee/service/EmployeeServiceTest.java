@@ -121,15 +121,16 @@ class EmployeeServiceTest {
     }
     
     @Test
-    void should_return_updated_employee_when_update_given_new_employee() {
+    void should_return_updated_employee_when_update_given_new_employee_and_even_though_update_employee_id_mismatch() {
         //given
-        when(employeeRepository.findAll()).thenReturn(createDummyEmployees());
-        Employee expected = new Employee("2", "new name", 15, "male", 999);
-                
+        Employee expected = new Employee("3", "new name", 15, "male", 999);
+        when(employeeRepository.update(any(), any())).thenReturn(expected);
+
         //when
         Employee actual = employeeService.update("2", expected);
         
         //then
         assertEquals(expected, actual);
+        assertEquals("2", actual.getId());
     }
 }
