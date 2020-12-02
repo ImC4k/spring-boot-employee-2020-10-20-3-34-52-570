@@ -38,4 +38,8 @@ public class EmployeeService {
     public List<Employee> getWithGenderFilter(String gender) {
         return employeeRepository.findAll().stream().filter(employee -> employee.getGender().equals(gender)).collect(Collectors.toList());
     }
+
+    public Employee update(String id, Employee updatedEmployee) {
+        return null;
+    }
 }

@@ -123,12 +123,13 @@ class EmployeeServiceTest {
     @Test
     void should_return_updated_employee_when_update_given_new_employee() {
         //given
-
+        when(employeeRepository.findAll()).thenReturn(createDummyEmployees());
+        Employee expected = new Employee("2", "new name", 15, "male", 999);
                 
         //when
-        
+        Employee actual = employeeService.update("2", expected);
         
         //then
-
+        assertEquals(expected, actual);
     }
 }
