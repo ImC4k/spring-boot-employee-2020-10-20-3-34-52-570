@@ -24,11 +24,11 @@ public class EmployeeRepository {
     }
 
     public Integer remove(String id) {
-        Employee employeesWithId = findAll().stream().filter(employee -> employee.getId().equals(id)).findFirst().orElse(null);
-        if (employeesWithId == null) {
+        Employee employeeWithId = findAll().stream().filter(employee -> employee.getId().equals(id)).findFirst().orElse(null);
+        if (employeeWithId == null) {
             return 0;
         }
-        findAll().remove(employeesWithId);
+        findAll().remove(employeeWithId);
         return 1;
     }
 }
