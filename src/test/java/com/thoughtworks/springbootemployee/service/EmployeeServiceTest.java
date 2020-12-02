@@ -127,7 +127,7 @@ class EmployeeServiceTest {
         Employee expected = new Employee("2", "new name", 15, "male", 999);
         when(employeeRepository.findAll()).thenReturn(createDummyEmployees());
         when(employeeRepository.create(any())).thenCallRealMethod();
-        when(employeeRepository.remove(any())).thenCallRealMethod();
+        when(employeeService.remove(any())).thenCallRealMethod();
 
         //when
         Employee actual = employeeService.update("2", updatedEmployee);
@@ -146,7 +146,7 @@ class EmployeeServiceTest {
         //given
         Employee updatedEmployee = new Employee("5", "new name", 15, "male", 999);
         when(employeeRepository.findAll()).thenReturn(createDummyEmployees());
-        when(employeeRepository.remove(any())).thenCallRealMethod();
+        when(employeeService.remove(any())).thenCallRealMethod();
 
         //when
         Employee actual = employeeService.update("5", updatedEmployee);

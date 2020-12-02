@@ -40,7 +40,7 @@ public class EmployeeService {
     }
 
     public Employee update(String id, Employee updatedEmployee) {
-        int numberOfDeletedEmployee = employeeRepository.remove(id);
+        int numberOfDeletedEmployee = remove(id);
         if (numberOfDeletedEmployee == 0) {
             return null;
         }
