@@ -19,6 +19,6 @@ public class EmployeeService {
 
 
     public Employee getOne(String id) {
-        return null;
+        return employeeRepository.findOne(id);
     }
 }

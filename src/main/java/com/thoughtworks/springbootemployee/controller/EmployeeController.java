@@ -25,7 +25,7 @@ public class EmployeeController {
 
     @GetMapping("/{id}")
     public Employee getOne(@PathVariable String id) {
-        return employees.stream().filter(employee -> employee.getId().equals(id)).findFirst().orElse(null);
+        return employeeService.getOne(id);
     }
 
     @GetMapping(params = {"page", "pageSize"})
