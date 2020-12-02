@@ -96,7 +96,6 @@ class CompanyServiceTest {
     @Test
     void should_return_employees_when_getEmployeesFrom_given_company_id_is_valid() {
         //given
-        List<Company> allCompanies = createDummyCompanyies();
         List<Employee> employeesFromCompanyX = new ArrayList<>();
         Employee employee1 = new Employee("1", "test", 16, "male", 1000);
         Employee employee2 = new Employee("2", "test", 16, "male", 1000);
@@ -106,27 +105,26 @@ class CompanyServiceTest {
         employeesFromCompanyX.add(employee2);
         employeesFromCompanyX.add(employee3);
         employeesFromCompanyX.add(employee4);
-        allCompanies.add(new Company("5", "company x", "addr 5", employeesFromCompanyX));
-        when(companyRepository.findAll()).thenReturn(allCompanies);
+        Company company = new Company("5", "company x", "addr 5", employeesFromCompanyX);
+        when(companyRepository.findOne(anyString())).thenReturn(company);
 
         //when
         List<Employee> actualList = companyService.getEmployeesFrom("5");
 
         //then
-        assertTrue(actualList.stream().allMatch(actual -> actual.getGender().equals("male")));
+        assertEquals(employeesFromCompanyX, actualList);
     }
 
     @Test
     void should_return_employees_when_getEmployeesFrom_given_company_id_is_invalid() {
         //given
         List<Company> allCompanies = createDummyCompanyies();
-        when(companyRepository.findAll()).thenReturn(allCompanies);
 
         //when
         List<Employee> actualList = companyService.getEmployeesFrom("999");
 
         //then
-        assertTrue(actualList.stream().allMatch(actual -> actual.getGender().equals("male")));
+        assertNull(actualList);
     }
 
     @Test
@@ -149,7 +147,7 @@ class CompanyServiceTest {
     void should_return_updated_company_when_update_given_new_company_and_even_though_update_company_id_mismatch() {
         //given
         Company updatedCompany = new Company("3", "new name", "addr", new ArrayList<>());
-        Company expected = new Company("2", "new name", "addr 1", new ArrayList<>());
+        Company expected = new Company("2", "new name", "addr", new ArrayList<>());
         when(companyRepository.findAll()).thenReturn(createDummyCompanyies());
         when(companyRepository.create(any())).thenCallRealMethod();
         when(companyService.remove(any())).thenCallRealMethod();

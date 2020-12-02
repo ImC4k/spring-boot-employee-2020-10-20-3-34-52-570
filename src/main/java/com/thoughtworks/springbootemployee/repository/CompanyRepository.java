@@ -2,22 +2,31 @@ package com.thoughtworks.springbootemployee.repository;
 
 import com.thoughtworks.springbootemployee.model.Company;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CompanyRepository {
+    private final List<Company> companies = new ArrayList<>();
+
     public List<Company> findAll() {
-        return null;
+        return this.companies;
     }
 
     public Company findOne(String id) {
-        return null;
+        return companies.stream().filter(company -> company.getId().equals(id)).findFirst().orElse(null);
     }
 
     public Company create(Company newCompany) {
-        return null;
+        findAll().add(newCompany);
+        return newCompany;
     }
 
     public Integer remove(String id) {
-        return 0;
+        Company companyWithId = findAll().stream().filter(employee -> employee.getId().equals(id)).findFirst().orElse(null);
+        if (companyWithId == null) {
+            return 0;
+        }
+        findAll().remove(companyWithId);
+        return 1;
     }
 }
