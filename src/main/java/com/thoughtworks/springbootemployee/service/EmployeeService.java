@@ -34,4 +34,8 @@ public class EmployeeService {
     public Employee create(Employee newEmployee) {
         return employeeRepository.create(newEmployee);
     }
+
+    public List<Employee> getWithGenderFilter(String gender) {
+        return null;
+    }
 }

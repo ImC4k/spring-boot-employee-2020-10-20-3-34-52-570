@@ -66,15 +66,7 @@ class EmployeeServiceTest {
     @Test
     void should_return_3_employees_when_getAllEmployeesWithPagination_given_employees_list_is_longer_than_3_and_pageNumber_is_1_and_pageSize_is_3() {
         //given
-        List<Employee> allEmployees = new ArrayList<>();
-        Employee employee1 = new Employee("1", "test", 16, "male", 1000);
-        Employee employee2 = new Employee("2", "test", 16, "male", 1000);
-        Employee employee3 = new Employee("3", "test", 16, "male", 1000);
-        Employee employee4 = new Employee("4", "test", 16, "male", 1000);
-        allEmployees.add(employee1);
-        allEmployees.add(employee2);
-        allEmployees.add(employee3);
-        allEmployees.add(employee4);
+        List<Employee> allEmployees = createDummyEmployees();
 
         when(employeeRepository.findAll()).thenReturn(allEmployees);
 
@@ -86,6 +78,32 @@ class EmployeeServiceTest {
         assertEquals("1", actual.get(0).getId());
         assertEquals("2", actual.get(1).getId());
         assertEquals("3", actual.get(2).getId());
+    }
+
+    @Test
+    void should_return_male_only_employees_when_getWithGenderFilter_given_non_empty_employees_with_both_gender_and_filter_is_male() {
+        //given
+        List<Employee> allEmployees = createDummyEmployees();
+        when(employeeRepository.findAll()).thenReturn(allEmployees);
+
+        //when
+        List<Employee> actualList = employeeService.getWithGenderFilter("male");
+
+        //then
+        assertTrue(actualList.stream().allMatch(actual -> actual.getGender().equals("male")));
+    }
+
+    private List<Employee> createDummyEmployees() {
+        List<Employee> allEmployees = new ArrayList<>();
+        Employee employee1 = new Employee("1", "test", 16, "male", 1000);
+        Employee employee2 = new Employee("2", "test", 16, "male", 1000);
+        Employee employee3 = new Employee("3", "test", 16, "female", 1000);
+        Employee employee4 = new Employee("4", "test", 16, "female", 1000);
+        allEmployees.add(employee1);
+        allEmployees.add(employee2);
+        allEmployees.add(employee3);
+        allEmployees.add(employee4);
+        return allEmployees;
     }
 
     @Test
