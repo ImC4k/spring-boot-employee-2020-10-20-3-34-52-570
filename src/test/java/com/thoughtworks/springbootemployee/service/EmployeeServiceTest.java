@@ -127,15 +127,31 @@ class EmployeeServiceTest {
         Employee expected = new Employee("2", "new name", 15, "male", 999);
         when(employeeRepository.findAll()).thenReturn(createDummyEmployees());
         when(employeeRepository.create(any())).thenCallRealMethod();
+        when(employeeRepository.remove(any())).thenCallRealMethod();
 
         //when
         Employee actual = employeeService.update("2", updatedEmployee);
-        
+
         //then
+        assertNotNull(actual);
         assertEquals("2", actual.getId());
         assertEquals("new name", actual.getName());
         assertEquals(15, actual.getAge());
         assertEquals("male", actual.getGender());
         assertEquals(999, actual.getSalary());
+    }
+
+    @Test
+    void should_return_null_when_update_given_new_employee_and_id_does_not_exist() {
+        //given
+        Employee updatedEmployee = new Employee("5", "new name", 15, "male", 999);
+        when(employeeRepository.findAll()).thenReturn(createDummyEmployees());
+        when(employeeRepository.remove(any())).thenCallRealMethod();
+
+        //when
+        Employee actual = employeeService.update("5", updatedEmployee);
+
+        //then
+        assertNull(actual);
     }
 }
