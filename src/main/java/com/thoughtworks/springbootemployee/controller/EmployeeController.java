@@ -40,8 +40,7 @@ public class EmployeeController {
 
     @PostMapping
     public Employee createNewEmployee(@RequestBody Employee newEmployee) {
-        employees.add(newEmployee);
-        return newEmployee;
+        return employeeService.create(newEmployee);
     }
 
     @PutMapping("/{id}")
