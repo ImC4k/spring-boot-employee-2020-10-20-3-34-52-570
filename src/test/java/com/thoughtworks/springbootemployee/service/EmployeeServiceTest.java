@@ -4,6 +4,7 @@ import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -14,7 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class EmployeeServiceTest {
@@ -22,6 +23,19 @@ class EmployeeServiceTest {
     private EmployeeService employeeService;
     @Mock
     private EmployeeRepository employeeRepository;
+
+    private List<Employee> createDummyEmployees() {
+        List<Employee> allEmployees = new ArrayList<>();
+        Employee employee1 = new Employee("1", "test", 16, "male", 1000);
+        Employee employee2 = new Employee("2", "test", 16, "male", 1000);
+        Employee employee3 = new Employee("3", "test", 16, "female", 1000);
+        Employee employee4 = new Employee("4", "test", 16, "female", 1000);
+        allEmployees.add(employee1);
+        allEmployees.add(employee2);
+        allEmployees.add(employee3);
+        allEmployees.add(employee4);
+        return allEmployees;
+    }
 
     @Test
     void should_return_all_employees_when_getAll_given_all_employees() {
@@ -93,29 +107,19 @@ class EmployeeServiceTest {
         assertTrue(actualList.stream().allMatch(actual -> actual.getGender().equals("male")));
     }
 
-    private List<Employee> createDummyEmployees() {
-        List<Employee> allEmployees = new ArrayList<>();
-        Employee employee1 = new Employee("1", "test", 16, "male", 1000);
-        Employee employee2 = new Employee("2", "test", 16, "male", 1000);
-        Employee employee3 = new Employee("3", "test", 16, "female", 1000);
-        Employee employee4 = new Employee("4", "test", 16, "female", 1000);
-        allEmployees.add(employee1);
-        allEmployees.add(employee2);
-        allEmployees.add(employee3);
-        allEmployees.add(employee4);
-        return allEmployees;
-    }
-
     @Test
     void should_return_created_employee_when_createEmployee_given_no_employee_in_database_and_a_new_employee() {
         //given
-        Employee expected = new Employee("123", "test", 15, "male", 10000);
-        when(employeeRepository.create(expected)).thenReturn(expected);
+        Employee employee = new Employee("123", "test", 15, "male", 10000);
+        when(employeeRepository.create(employee)).thenReturn(employee);
 
         //when
-        final Employee actual = employeeService.create(expected);
+        employeeService.create(employee);
+        final ArgumentCaptor<Employee> employeeArgumentCaptor = ArgumentCaptor.forClass(Employee.class);
+        verify(employeeRepository, times(1)).create(employeeArgumentCaptor.capture());
 
         //then
-        assertEquals(expected, actual);
+        final Employee actual = employeeArgumentCaptor.getValue();
+        assertEquals(employee, actual);
     }
 }
