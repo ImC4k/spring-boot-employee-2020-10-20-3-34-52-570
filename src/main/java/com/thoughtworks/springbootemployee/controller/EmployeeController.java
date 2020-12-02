@@ -42,4 +42,15 @@ public class EmployeeController {
         employees.add(newEmployee);
         return newEmployee;
     }
+
+    @PutMapping("/{id}")
+    public Employee updateEmployee(@PathVariable String id, @RequestBody Employee employeeUpdate) {
+        employees.stream().filter(employee -> employee.getId().equals(id))
+                .findFirst()
+                .ifPresent(employee -> {
+                    employees.remove(employee);
+                    employees.add(employeeUpdate);
+                });
+        return employeeUpdate;
+    }
 }
