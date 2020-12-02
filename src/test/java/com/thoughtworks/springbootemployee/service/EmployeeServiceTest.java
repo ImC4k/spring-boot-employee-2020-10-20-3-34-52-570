@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -32,5 +33,32 @@ class EmployeeServiceTest {
 
         //then
         assertEquals(1, employeeList.size());
+    }
+
+    @Test
+    void should_return_the_employee_when_getOne_given_a_valid_employee_id() {
+        //given
+        Employee expected = new Employee("123", "test", 16, "male", 1000);
+        when(employeeRepository.findOne(any())).thenReturn(expected);
+
+        //when
+        final Employee actual = employeeService.getOne("123");
+
+        //then
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void should_return_null_when_getOne_given_a_invalid_employee_id() {
+        //given
+        Employee expected = new Employee("123", "test", 16, "male", 1000);
+        when(employeeRepository.findOne("456")).thenReturn(null);
+
+        //when
+        final Employee actual = employeeService.getOne("456");
+
+        //then
+        assertNotEquals(expected, actual);
+        assertNull(actual);
     }
 }

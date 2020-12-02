@@ -16,4 +16,9 @@ public class EmployeeService {
     public List<Employee> getAll() {
         return employeeRepository.findAll();
     }
+
+
+    public Employee getOne(String id) {
+        return null;
+    }
 }

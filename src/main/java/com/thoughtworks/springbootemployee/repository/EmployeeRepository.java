@@ -13,4 +13,8 @@ public class EmployeeRepository {
     public List<Employee> findAll() {
         return this.employees;
     }
+
+    public Employee findOne(String id) {
+        return employees.stream().filter(employee -> employee.getId().equals(id)).findFirst().orElse(null);
+    }
 }
