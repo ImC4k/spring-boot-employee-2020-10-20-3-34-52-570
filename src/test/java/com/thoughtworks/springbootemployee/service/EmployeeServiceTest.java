@@ -31,6 +31,6 @@ class EmployeeServiceTest {
         final List<Employee> employeeList = employeeService.getAll();
 
         //then
-        assertEquals(0, employeeList.size());
+        assertEquals(1, employeeList.size());
     }
 }
