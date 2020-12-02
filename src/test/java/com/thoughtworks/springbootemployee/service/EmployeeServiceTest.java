@@ -80,9 +80,7 @@ class EmployeeServiceTest {
     @Test
     void should_return_3_employees_when_getAllEmployeesWithPagination_given_employees_list_is_longer_than_3_and_pageNumber_is_1_and_pageSize_is_3() {
         //given
-        List<Employee> allEmployees = createDummyEmployees();
-
-        when(employeeRepository.findAll()).thenReturn(allEmployees);
+        when(employeeRepository.findAll()).thenReturn(createDummyEmployees());
 
         //when
         List<Employee> actual = employeeService.getWithPagination(1, 3);
@@ -97,8 +95,7 @@ class EmployeeServiceTest {
     @Test
     void should_return_male_only_employees_when_getWithGenderFilter_given_non_empty_employees_with_both_gender_and_filter_is_male() {
         //given
-        List<Employee> allEmployees = createDummyEmployees();
-        when(employeeRepository.findAll()).thenReturn(allEmployees);
+        when(employeeRepository.findAll()).thenReturn(createDummyEmployees());
 
         //when
         List<Employee> actualList = employeeService.getWithGenderFilter("male");
@@ -121,5 +118,17 @@ class EmployeeServiceTest {
         //then
         final Employee actual = employeeArgumentCaptor.getValue();
         assertEquals(employee, actual);
+    }
+    
+    @Test
+    void should_return_updated_employee_when_update_given_new_employee() {
+        //given
+
+                
+        //when
+        
+        
+        //then
+
     }
 }
