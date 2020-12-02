@@ -38,7 +38,7 @@ public class CompanyController {
     }
 
     @GetMapping("/{id}/employees")
-    public List<Employee> getCompanyEmployees(@RequestParam("id") String id) {
+    public List<Employee> getCompanyEmployees(@PathVariable("id") String id) {
         return companyService.getEmployeesFrom(id);
     }
 
