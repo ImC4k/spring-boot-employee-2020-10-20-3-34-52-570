@@ -18,7 +18,8 @@ public class EmployeeRepository {
         return employees.stream().filter(employee -> employee.getId().equals(id)).findFirst().orElse(null);
     }
 
-    public Employee create(Employee expected) {
-        return null;
+    public Employee create(Employee newEmployee) {
+        employees.add(newEmployee);
+        return newEmployee;
     }
 }
