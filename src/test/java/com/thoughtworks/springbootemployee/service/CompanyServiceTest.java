@@ -84,7 +84,7 @@ class CompanyServiceTest {
         when(companyRepository.findAll()).thenReturn(createDummyCompanyies());
 
         //when
-        List<Employee> actual = companyService.getWithPagination(1, 3);
+        List<Company> actual = companyService.getWithPagination(1, 3);
 
         //then
         assertEquals(3, actual.size());

@@ -14,7 +14,7 @@ public class CompanyService {
         return null;
     }
 
-    public List<Employee> getWithPagination(int pageNumber, int pageSize) {
+    public List<Company> getWithPagination(int pageNumber, int pageSize) {
         return null;
     }
 
