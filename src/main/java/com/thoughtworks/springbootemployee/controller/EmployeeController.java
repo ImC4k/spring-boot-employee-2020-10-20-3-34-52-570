@@ -30,11 +30,7 @@ public class EmployeeController {
 
     @GetMapping(params = {"page", "pageSize"})
     public List<Employee> getWithPaging(@RequestParam("page") Integer pageNumber, @RequestParam("pageSize") Integer pageSize) {
-        int pageToSkip = pageNumber - 1;
-        return employees.stream()
-                .skip((long) pageToSkip * pageSize)
-                .limit(pageSize)
-                .collect(Collectors.toList());
+        return employeeService.getWithPagination(pageNumber, pageSize);
     }
 
 
