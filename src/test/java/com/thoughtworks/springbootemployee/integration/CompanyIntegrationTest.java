@@ -226,4 +226,39 @@ class CompanyIntegrationTest {
                 )
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    void should_return_ok_when_delete_given_a_company_is_deleted() throws Exception {
+        //given
+        Company company = new Company("tesla");
+        Company expected = companyRepository.save(company);
+        //when
+        //then
+        mockMvc
+                .perform(
+                        delete("/companies/" + expected.getId())
+                )
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void should_return_empty_list_when_getAll_given_originally_one_company_but_then_got_deleted() throws Exception {
+        //given
+        Company company = new Company("tesla");
+        Company expected = companyRepository.save(company);
+
+        //when
+        mockMvc
+                .perform(
+                        delete("/companies/" + expected.getId())
+                );
+
+        //then
+        mockMvc
+                .perform(
+                        get("/companies")
+                )
+                .andExpect(status().isOk())
+                .andExpect(content().string("[]"));
+    }
 }
