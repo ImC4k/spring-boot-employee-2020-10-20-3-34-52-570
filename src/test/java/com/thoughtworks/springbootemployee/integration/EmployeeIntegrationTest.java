@@ -13,8 +13,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -188,5 +187,68 @@ class EmployeeIntegrationTest {
         assertEquals(expected.getGender(), employeeList.get(0).getGender());
         assertEquals(expected.getSalary(), employeeList.get(0).getSalary());
         assertEquals(expected.getCompanyId(), employeeList.get(0).getCompanyId());
+    }
+
+    @Test
+    void should_return_updated_employee_when_update_given_original_employee_in_list() throws Exception {
+        //given
+        employeeRepository.save(new Employee("Alex", 19, "male", 999, "1"));
+        employeeRepository.save(new Employee("Boyd", 19, "male", 999, "2"));
+        Employee employee = new Employee("Calvin", 19, "male", 999, "3");
+        Employee expected = employeeRepository.save(employee);
+        employeeRepository.save(new Employee("David", 19, "male", 999, "4"));
+        employeeRepository.save(new Employee("Elaine", 19, "female", 999, "5"));
+        employeeRepository.save(new Employee("Flora", 19, "female", 999, "6"));
+
+        String updateAsJson = "{\n" +
+                "    \"name\": \"Calvinnnn\",\n" +
+                "    \"age\": 23,\n" +
+                "    \"gender\": \"male\",\n" +
+                "    \"salary\": 19999,\n" +
+                "    \"companyId\": \"1\"\n" +
+                "}";
+        Employee update = new Employee("Calvinnnn", 23, "male", 19999, "1");
+
+        //when
+        //then
+        mockMvc
+                .perform(
+                        put("/employees/" + expected.getId())
+                        .contentType(APPLICATION_JSON)
+                        .content(updateAsJson)
+                )
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(expected.getId()))
+                .andExpect(jsonPath("$.name").value(update.getName()))
+                .andExpect(jsonPath("$.age").value(update.getAge()))
+                .andExpect(jsonPath("$.gender").value(update.getGender()))
+                .andExpect(jsonPath("$.salary").value(update.getSalary()))
+                .andExpect(jsonPath("$.companyId").value(update.getCompanyId()));
+    }
+
+    @Test
+    void should_return_not_found_when_update_given_original_employee_in_list() throws Exception {
+        //given
+        employeeRepository.save(new Employee("Alex", 19, "male", 999, "1"));
+        employeeRepository.save(new Employee("Boyd", 19, "male", 999, "2"));
+
+        String updateAsJson = "{\n" +
+                "    \"name\": \"Calvinnnn\",\n" +
+                "    \"age\": 23,\n" +
+                "    \"gender\": \"male\",\n" +
+                "    \"salary\": 19999,\n" +
+                "    \"companyId\": \"1\"\n" +
+                "}";
+
+        //when
+        //then
+        mockMvc
+                .perform(
+                        put("/employees/10000")
+                                .contentType(APPLICATION_JSON)
+                                .content(updateAsJson)
+                )
+                .andExpect(status().isNotFound());
     }
 }
