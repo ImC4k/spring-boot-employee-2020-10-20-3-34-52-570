@@ -9,6 +9,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -73,5 +76,10 @@ class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$.gender").value("male"))
                 .andExpect(jsonPath("$.salary").value(19999))
                 .andExpect(jsonPath("$.companyId").value("1"));
+
+        List<Employee> employeeList = employeeRepository.findAll();
+        assertEquals(1, employeeList.size());
+        assertEquals("John", employeeList.get(0).getName());
+        // ... assert other fields
     }
 }
