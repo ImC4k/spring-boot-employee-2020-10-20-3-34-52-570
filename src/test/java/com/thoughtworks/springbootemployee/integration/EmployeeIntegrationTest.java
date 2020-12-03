@@ -3,6 +3,7 @@ package com.thoughtworks.springbootemployee.integration;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -155,6 +156,7 @@ class EmployeeIntegrationTest {
     @Test
     void should_return_employee_when_create_employee_given_new_employee() throws Exception {
         //given
+        employeeRepository.deleteAll();
         Employee expected = new Employee("John", 23, "male", 19999, "1");
         String employeeAsJson = "{\n" +
                 "    \"name\": \"John\",\n" +
