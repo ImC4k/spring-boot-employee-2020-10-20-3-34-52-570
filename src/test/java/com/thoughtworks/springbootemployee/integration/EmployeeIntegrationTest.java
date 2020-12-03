@@ -91,39 +91,6 @@ class EmployeeIntegrationTest {
     }
 
     @Test
-    void should_return_employee_when_create_employee_given_new_employee() throws Exception {
-        //given
-        String employeeAsJson = "{\n" +
-                "    \"name\": \"John\",\n" +
-                "    \"age\": 23,\n" +
-                "    \"gender\": \"male\",\n" +
-                "    \"salary\": 19999,\n" +
-                "    \"companyId\": \"1\"\n" +
-                "}";
-
-        //when
-        //then
-        mockMvc
-                .perform(
-                        post("/employees")
-                                .contentType(APPLICATION_JSON)
-                                .content(employeeAsJson)
-                )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").isString())
-                .andExpect(jsonPath("$.name").value("John"))
-                .andExpect(jsonPath("$.age").value(23))
-                .andExpect(jsonPath("$.gender").value("male"))
-                .andExpect(jsonPath("$.salary").value(19999))
-                .andExpect(jsonPath("$.companyId").value("1"));
-
-        List<Employee> employeeList = employeeRepository.findAll();
-        assertEquals(1, employeeList.size());
-        assertEquals("John", employeeList.get(0).getName());
-        // ... assert other fields
-    }
-
-    @Test
     void should_return_paginated_employeeList_when_getWithPagination_given_longer_than_pageSize_employeeList() throws Exception {
         //given
         employeeRepository.save(new Employee("Alex", 19, "male", 999, "1"));
@@ -189,5 +156,42 @@ class EmployeeIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON))
                 .andExpect(content().string("[]"));
+    }
+
+    @Test
+    void should_return_employee_when_create_employee_given_new_employee() throws Exception {
+        //given
+        Employee expected = new Employee("John", 23, "male", 19999, "1");
+        String employeeAsJson = "{\n" +
+                "    \"name\": \"John\",\n" +
+                "    \"age\": 23,\n" +
+                "    \"gender\": \"male\",\n" +
+                "    \"salary\": 19999,\n" +
+                "    \"companyId\": \"1\"\n" +
+                "}";
+
+        //when
+        //then
+        mockMvc
+                .perform(
+                        post("/employees")
+                                .contentType(APPLICATION_JSON)
+                                .content(employeeAsJson)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isString())
+                .andExpect(jsonPath("$.name").value("John"))
+                .andExpect(jsonPath("$.age").value(23))
+                .andExpect(jsonPath("$.gender").value("male"))
+                .andExpect(jsonPath("$.salary").value(19999))
+                .andExpect(jsonPath("$.companyId").value("1"));
+
+        List<Employee> employeeList = employeeRepository.findAll();
+        assertEquals(1, employeeList.size());
+        assertEquals(expected.getName(), employeeList.get(0).getName());
+        assertEquals(expected.getAge(), employeeList.get(0).getAge());
+        assertEquals(expected.getGender(), employeeList.get(0).getGender());
+        assertEquals(expected.getSalary(), employeeList.get(0).getSalary());
+        assertEquals(expected.getCompanyId(), employeeList.get(0).getCompanyId());
     }
 }
