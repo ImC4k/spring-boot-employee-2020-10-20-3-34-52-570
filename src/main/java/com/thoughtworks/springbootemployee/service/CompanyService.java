@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.ResourceNotFoundException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.CompanyResponse;
 import com.thoughtworks.springbootemployee.model.Employee;
@@ -49,8 +50,15 @@ public class CompanyService {
         return companyRepository.save(newCompany);
     }
 
-    public void remove(String id) {
-        companyRepository.deleteById(id);
+    public void remove(String id) throws ResourceNotFoundException {
+        try {
+            if (companyRepository.findById(id).isPresent()) {
+                companyRepository.deleteById(id);
+                return;
+            }
+        }
+        catch(Exception ignore) {}
+        throw new ResourceNotFoundException();
     }
 
     public Company update(String id, Company updatedCompany) {

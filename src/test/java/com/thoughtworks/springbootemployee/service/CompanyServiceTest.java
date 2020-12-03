@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.ResourceNotFoundException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.CompanyResponse;
 import com.thoughtworks.springbootemployee.model.Employee;
@@ -71,17 +72,16 @@ class CompanyServiceTest {
     }
 
     @Test
-    void should_return_null_when_getOne_given_a_invalid_company_id() {
+    void should_throw_ResourceNotFoundException_when_getOne_given_a_invalid_company_id() {
         //given
         Company expected = new Company("123", "test");
         when(companyRepository.findById("456")).thenReturn(Optional.empty());
 
         //when
-        final CompanyResponse actual = companyService.getOne("456");
+        Exception exception = assertThrows(ResourceNotFoundException.class, () -> companyService.getOne("456"));
 
         //then
-        assertNotEquals(expected, actual);
-        assertNull(actual);
+        assertEquals("Resource not found", exception.getMessage());
     }
 
     @Test
@@ -155,25 +155,25 @@ class CompanyServiceTest {
     }
 
     @Test
-    void should_return_null_when_update_given_new_company_and_id_does_not_exist() {
+    void should_throw_ResourceNotFoundException_when_update_given_new_company_and_id_does_not_exist() {
         //given
         Company updatedCompany = new Company("5", "new name");
         when(companyRepository.findById(any())).thenReturn(Optional.empty());
 
         //when
-        Company actual = companyService.update("5", updatedCompany);
+        Exception exception = assertThrows(ResourceNotFoundException.class, () -> companyService.update("5", updatedCompany));
 
         //then
-        assertNull(actual);
+        assertEquals("Resource not found", exception.getMessage());
     }
 
     @Test
-    void should_return_1_and_have_a_company_removed_when_remove() {
+    void should_throw_ResourceNotFoundException_and_have_a_company_removed_when_remove() {
         //given
         //when
-        companyService.remove("1");
+        Exception exception = assertThrows(ResourceNotFoundException.class, () -> companyService.remove("1"));
 
         //then
-        verify(companyRepository, times(1)).deleteById("1");
+        assertEquals("Resource not found", exception.getMessage());
     }
 }

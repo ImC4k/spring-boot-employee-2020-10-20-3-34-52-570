@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.controller;
 
+import com.thoughtworks.springbootemployee.exception.ResourceNotFoundException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.CompanyResponse;
 import com.thoughtworks.springbootemployee.model.Employee;
@@ -46,6 +47,7 @@ public class CompanyController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Company createNewCompany(@RequestBody Company newCompany) {
         return companyService.create(newCompany);
     }
@@ -63,7 +65,14 @@ public class CompanyController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCompany(@PathVariable String id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteCompany(@PathVariable String id) throws ResourceNotFoundException {
         companyService.remove(id);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public void handleResourceNotFoundException() {
+
     }
 }

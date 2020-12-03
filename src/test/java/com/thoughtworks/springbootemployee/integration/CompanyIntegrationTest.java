@@ -238,7 +238,7 @@ class CompanyIntegrationTest {
                 .perform(
                         delete("/companies/" + expected.getId())
                 )
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test
