@@ -24,9 +24,8 @@ public class CompanyService {
     }
 
     public List<Company> getWithPagination(int pageNumber, int pageSize) {
-        int pageToSkip = pageNumber - 1;
         return companyRepository.findAll().stream()
-                .skip((long) pageToSkip * pageSize)
+                .skip((long) pageNumber * pageSize)
                 .limit(pageSize)
                 .collect(Collectors.toList());
     }
@@ -48,9 +47,8 @@ public class CompanyService {
         if (originalCompany == null) {
             return null;
         }
-        originalCompany.setName(updatedCompany.getName());
-        originalCompany.setAddress(updatedCompany.getAddress());
-        companyRepository.save(originalCompany);
-        return originalCompany;
+        updatedCompany.setId(id);
+        companyRepository.save(updatedCompany);
+        return updatedCompany;
     }
 }
