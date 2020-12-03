@@ -22,11 +22,14 @@ public class EmployeeController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Employee> getOne(@PathVariable String id) {
-        Employee employee =  employeeService.getOne(id);
-        if (employee == null) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        try {
+            Employee employee =  employeeService.getOne(id);
+            if (employee != null) {
+                return new ResponseEntity<>(employee, HttpStatus.OK);
+            }
         }
-        return new ResponseEntity<>(employee, HttpStatus.OK);
+        catch (Exception ignored) {}
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(params = {"page", "pageSize"})
@@ -46,11 +49,14 @@ public class EmployeeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Employee> updateEmployee(@PathVariable String id, @RequestBody Employee employeeUpdate) {
-        Employee updatedEmployee = employeeService.update(id, employeeUpdate);
-        if (updatedEmployee == null) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        try {
+            Employee updatedEmployee = employeeService.update(id, employeeUpdate);
+            if (updatedEmployee != null) {
+                return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
+            }
         }
-        return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
+        catch (Exception ignored) {}
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/{id}")
