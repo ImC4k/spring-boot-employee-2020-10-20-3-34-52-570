@@ -58,4 +58,43 @@ class CompanyIntegrationTest {
                 .andExpect(jsonPath("$[1].companyName").value("SpaceX"))
                 .andExpect(jsonPath("$[1].employeesNumber").value(0));
     }
+
+    @Test
+    void should_return_particular_company_when_get_one_given_valid_id_in_path() throws Exception {
+        //given
+        Company company1 = new Company("Tesla");
+        Company expected1 = companyRepository.save(company1);
+        Company company2 = new Company("SpaceX");
+        Company expected2 = companyRepository.save(company2);
+        Employee employee = new Employee("Calvin", 19, "male", 999, expected1.getId());
+        employeeRepository.save(employee);
+
+        //when
+        //then
+        mockMvc.perform(get("/companies/" + expected1.getId()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(expected1.getId()))
+                .andExpect(jsonPath("$.companyName").value(expected1.getCompanyName()))
+                .andExpect(jsonPath("$.employeesNumber").value(1))
+                .andExpect(jsonPath("$.employees[0].name").value("Calvin"))
+                .andExpect(jsonPath("$.employees[0].age").value(19))
+                .andExpect(jsonPath("$.employees[0].gender").value("male"))
+                .andExpect(jsonPath("$.employees[0].salary").value(999))
+                .andExpect(jsonPath("$.employees[0].companyId").value(expected1.getId()));
+    }
+
+    @Test
+    void should_return_not_found_when_get_one_given_invalid_id_in_path() throws Exception {
+        //given
+        Company company1 = new Company("Tesla");
+        Company expected1 = companyRepository.save(company1);
+        Company company2 = new Company("SpaceX");
+        Company expected2 = companyRepository.save(company2);
+
+        //when
+        //then
+        mockMvc.perform(get("/companies/100000"))
+                .andExpect(status().isNotFound());
+    }
 }
