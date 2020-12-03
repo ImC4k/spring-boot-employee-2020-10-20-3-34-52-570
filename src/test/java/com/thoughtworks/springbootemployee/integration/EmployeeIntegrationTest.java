@@ -33,7 +33,7 @@ class EmployeeIntegrationTest {
     @Test
     void should_return_all_employees_when_get_all_given_repository_has_employees() throws Exception {
         //given
-        Employee employee = new Employee("123", "Calvin", 19, "male", 999, "1");
+        Employee employee = new Employee("Calvin", 19, "male", 999, "1");
         employeeRepository.save(employee);
 
         //when
@@ -53,7 +53,6 @@ class EmployeeIntegrationTest {
     void should_return_employee_when_create_employee_given_new_employee() throws Exception {
         //given
         String employeeAsJson = "{\n" +
-                "    \"id\": \"789\",\n" +
                 "    \"name\": \"John\",\n" +
                 "    \"age\": 23,\n" +
                 "    \"gender\": \"male\",\n" +
@@ -81,5 +80,73 @@ class EmployeeIntegrationTest {
         assertEquals(1, employeeList.size());
         assertEquals("John", employeeList.get(0).getName());
         // ... assert other fields
+    }
+
+    @Test
+    void should_return_paginated_employeeList_when_getWithPagination_given_longer_than_pageSize_employeeList() throws Exception {
+        //given
+        employeeRepository.save(new Employee("Alex", 19, "male", 999, "1"));
+        employeeRepository.save(new Employee("Boyd", 19, "male", 999, "2"));
+        employeeRepository.save(new Employee("Calvin", 19, "male", 999, "3"));
+        employeeRepository.save(new Employee("David", 19, "male", 999, "4"));
+        employeeRepository.save(new Employee("Elaine", 19, "female", 999, "5"));
+        employeeRepository.save(new Employee("Flora", 19, "female", 999, "6"));
+
+        //when
+        //then
+        mockMvc.perform(get("/employees?page=1&pageSize=2"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].id").isString())
+                .andExpect(jsonPath("$[0].name").value("Calvin"))
+                .andExpect(jsonPath("$[0].age").value(19))
+                .andExpect(jsonPath("$[0].gender").value("male"))
+                .andExpect(jsonPath("$[0].salary").value(999))
+                .andExpect(jsonPath("$[0].companyId").value("3"))
+                .andExpect(jsonPath("$[1].id").isString())
+                .andExpect(jsonPath("$[1].name").value("David"))
+                .andExpect(jsonPath("$[1].age").value(19))
+                .andExpect(jsonPath("$[1].gender").value("male"))
+                .andExpect(jsonPath("$[1].salary").value(999))
+                .andExpect(jsonPath("$[1].companyId").value("4"));
+    }
+
+    @Test
+    void should_return_paginated_employeeList_when_getWithPagination_given_shorter_than_pageSize_employeeList() throws Exception {
+        //given
+        employeeRepository.save(new Employee("Alex", 19, "male", 999, "1"));
+        employeeRepository.save(new Employee("Boyd", 19, "male", 999, "2"));
+
+        //when
+        //then
+        mockMvc.perform(get("/employees?page=0&pageSize=3"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].id").isString())
+                .andExpect(jsonPath("$[0].name").value("Alex"))
+                .andExpect(jsonPath("$[0].age").value(19))
+                .andExpect(jsonPath("$[0].gender").value("male"))
+                .andExpect(jsonPath("$[0].salary").value(999))
+                .andExpect(jsonPath("$[0].companyId").value("1"))
+                .andExpect(jsonPath("$[1].id").isString())
+                .andExpect(jsonPath("$[1].name").value("Boyd"))
+                .andExpect(jsonPath("$[1].age").value(19))
+                .andExpect(jsonPath("$[1].gender").value("male"))
+                .andExpect(jsonPath("$[1].salary").value(999))
+                .andExpect(jsonPath("$[1].companyId").value("2"));
+    }
+
+    @Test
+    void should_return_emptyList_when_getWithPagination_given_pageNumber_exceeds_employeeList_size() throws Exception {
+        //given
+        employeeRepository.save(new Employee("Alex", 19, "male", 999, "1"));
+        employeeRepository.save(new Employee("Boyd", 19, "male", 999, "2"));
+
+        //when
+        //then
+        mockMvc.perform(get("/employees?page=2&pageSize=3"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON))
+                .andExpect(content().string("[]"));
     }
 }
