@@ -15,8 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -176,5 +175,55 @@ class CompanyIntegrationTest {
         List<Company> companyList = companyRepository.findAll();
         assertEquals(1, companyList.size());
         assertEquals(expected.getCompanyName(), companyList.get(0).getCompanyName());
+    }
+
+    @Test
+    void should_return_updated_company_when_update_given_original_company_in_list() throws Exception {
+        //given
+        companyRepository.save(new Company("paypal"));
+        companyRepository.save(new Company("tesla"));
+        Company company = new Company("spacex");
+        Company expected = companyRepository.save(company);
+        companyRepository.save(new Company("boring"));
+        companyRepository.save(new Company("openai"));
+
+        String updateAsJson = "{\n" +
+                "    \"companyName\": \"super spacex, mars ltd.\"\n" +
+                "}";
+        Company update = new Company("super spacex, mars ltd.");
+
+        //when
+        //then
+        mockMvc
+                .perform(
+                        put("/companies/" + expected.getId())
+                                .contentType(APPLICATION_JSON)
+                                .content(updateAsJson)
+                )
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(expected.getId()))
+                .andExpect(jsonPath("$.companyName").value(update.getCompanyName()));
+    }
+
+    @Test
+    void should_return_not_found_when_update_given_invalid_id() throws Exception {
+        //given
+        companyRepository.save(new Company("paypal"));
+        companyRepository.save(new Company("tesla"));
+
+        String updateAsJson = "{\n" +
+                "    \"companyName\": \"super spacex, mars ltd.\"\n" +
+                "}";
+
+        //when
+        //then
+        mockMvc
+                .perform(
+                        put("/companies/10000")
+                                .contentType(APPLICATION_JSON)
+                                .content(updateAsJson)
+                )
+                .andExpect(status().isNotFound());
     }
 }
