@@ -1,8 +1,13 @@
 package com.thoughtworks.springbootemployee.model;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
+
 import java.util.List;
 
+@Document
 public class Company {
+    @MongoId
     private String id;
     private String name;
     private String address;
@@ -22,18 +27,32 @@ public class Company {
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getAddress() {
         return address;
     }
 
-    public List<Employee> getEmployees() { return employees; }
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-    public void setId(String id) {
-        this.id = id;
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
     }
 
     @Override

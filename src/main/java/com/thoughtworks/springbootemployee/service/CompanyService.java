@@ -2,7 +2,7 @@ package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
-import com.thoughtworks.springbootemployee.repository.CompanyRepository;
+import com.thoughtworks.springbootemployee.repository.CompanyRepository1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,14 +11,14 @@ import java.util.stream.Collectors;
 
 @Service
 public class CompanyService {
-    @Autowired private CompanyRepository companyRepository;
+    @Autowired private CompanyRepository1 companyRepository;
 
     public List<Company> getAll() {
         return companyRepository.findAll();
     }
 
     public Company getOne(String id) {
-        return companyRepository.findById(id);
+        return companyRepository.findById(id).orElse(null);
     }
 
     public List<Company> getWithPagination(int pageNumber, int pageSize) {
@@ -30,7 +30,7 @@ public class CompanyService {
     }
 
     public List<Employee> getEmployeesFrom(String companyId) {
-        Company targetCompany = companyRepository.findById(companyId);
+        Company targetCompany = companyRepository.findById(companyId).orElse(null);
         if (targetCompany == null) {
             return null;
         }
@@ -41,16 +41,19 @@ public class CompanyService {
         return companyRepository.save(newCompany);
     }
 
-    public Integer remove(String id) {
-        return companyRepository.remove(id);
+    public void remove(String id) {
+        companyRepository.deleteById(id);
     }
 
     public Company update(String id, Company updatedCompany) {
-        Company originalCompany = companyRepository.findById(id);
+        Company originalCompany = companyRepository.findById(id).orElse(null);
         if (originalCompany == null) {
             return null;
         }
-        updatedCompany.setId(id);
-        return companyRepository.save(updatedCompany);
+        originalCompany.setName(updatedCompany.getName());
+        originalCompany.setAddress(updatedCompany.getAddress());
+        originalCompany.setEmployees(updatedCompany.getEmployees());
+        companyRepository.save(originalCompany);
+        return originalCompany;
     }
 }
