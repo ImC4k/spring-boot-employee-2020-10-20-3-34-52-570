@@ -11,8 +11,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -147,5 +151,30 @@ class CompanyIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON))
                 .andExpect(content().string("[]"));
+    }
+
+    @Test
+    void should_return_company_when_create_company_given_new_company() throws Exception {
+        //given
+        Company expected = new Company("tesla");
+        String companyAsJson = "{\n" +
+                "    \"companyName\": \"tesla\"\n" +
+                "}";
+
+        //when
+        //then
+        mockMvc
+                .perform(
+                        post("/companies")
+                                .contentType(APPLICATION_JSON)
+                                .content(companyAsJson)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isString())
+                .andExpect(jsonPath("$.companyName").value("tesla"));
+
+        List<Company> companyList = companyRepository.findAll();
+        assertEquals(1, companyList.size());
+        assertEquals(expected.getCompanyName(), companyList.get(0).getCompanyName());
     }
 }
