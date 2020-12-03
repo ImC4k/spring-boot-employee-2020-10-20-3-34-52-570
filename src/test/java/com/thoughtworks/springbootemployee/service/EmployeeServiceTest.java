@@ -96,13 +96,11 @@ class EmployeeServiceTest {
     @Test
     void should_return_male_only_employees_when_getWithGenderFilter_given_non_empty_employees_with_both_gender_and_filter_is_male() {
         //given
-        when(employeeRepository.findAll()).thenReturn(createDummyEmployees());
-
         //when
-        List<Employee> actualList = employeeService.getWithGenderFilter("male");
+        employeeService.getWithGenderFilter("male");
 
         //then
-        assertTrue(actualList.stream().allMatch(actual -> actual.getGender().equals("male")));
+        verify(employeeRepository, times(1)).findAllByGender("male");
     }
 
     @Test
