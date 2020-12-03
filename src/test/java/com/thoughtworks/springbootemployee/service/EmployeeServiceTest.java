@@ -84,7 +84,7 @@ class EmployeeServiceTest {
         when(employeeRepository.findAll()).thenReturn(createDummyEmployees());
 
         //when
-        List<Employee> actual = employeeService.getWithPagination(1, 3);
+        List<Employee> actual = employeeService.getWithPagination(0, 3);
 
         //then
         assertEquals(3, actual.size());

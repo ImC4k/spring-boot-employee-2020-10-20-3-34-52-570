@@ -25,9 +25,8 @@ public class EmployeeService {
     }
 
     public List<Employee> getWithPagination(int pageNumber, int pageSize) {
-        int pageToSkip = pageNumber - 1;
         return employeeRepository.findAll().stream()
-                .skip((long) pageToSkip * pageSize)
+                .skip((long) pageNumber * pageSize)
                 .limit(pageSize)
                 .collect(Collectors.toList());
     }
@@ -45,12 +44,9 @@ public class EmployeeService {
         if (originalEmployee == null) {
             return null;
         }
-        originalEmployee.setName(updatedEmployee.getName());
-        originalEmployee.setAge(updatedEmployee.getAge());
-        originalEmployee.setGender(updatedEmployee.getGender());
-        originalEmployee.setSalary(updatedEmployee.getSalary());
-        employeeRepository.save(originalEmployee);
-        return originalEmployee;
+        updatedEmployee.setId(originalEmployee.getId());
+        employeeRepository.save(updatedEmployee);
+        return updatedEmployee;
     }
 
     public void remove(String id) {
