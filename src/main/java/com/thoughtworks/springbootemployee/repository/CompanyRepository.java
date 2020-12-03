@@ -15,7 +15,7 @@ public class CompanyRepository {
     }
 
     public Company findById(String id) {
-        return companies.stream().filter(company -> company.getId().equals(id)).findFirst().orElse(null);
+        return findAll().stream().filter(company -> company.getId().equals(id)).findFirst().orElse(null);
     }
 
     public Company save(Company newCompany) {

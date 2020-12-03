@@ -148,9 +148,8 @@ class CompanyServiceTest {
         //given
         Company updatedCompany = new Company("3", "new name", "addr", new ArrayList<>());
         Company expected = new Company("2", "new name", "addr", new ArrayList<>());
-        when(companyRepository.findAll()).thenReturn(createDummyCompanyies());
+        when(companyRepository.findById("2")).thenReturn(expected);
         when(companyRepository.save(any())).thenCallRealMethod();
-        when(companyService.remove(any())).thenCallRealMethod();
 
         //when
         companyService.update("2", updatedCompany);
@@ -167,8 +166,7 @@ class CompanyServiceTest {
     void should_return_null_when_update_given_new_company_and_id_does_not_exist() {
         //given
         Company updatedCompany = new Company("5", "new name", "addr", new ArrayList<>());
-        when(companyRepository.findAll()).thenReturn(createDummyCompanyies());
-        when(companyService.remove(any())).thenCallRealMethod();
+        when(companyRepository.findById(any())).thenCallRealMethod();
 
         //when
         Company actual = companyService.update("5", updatedCompany);

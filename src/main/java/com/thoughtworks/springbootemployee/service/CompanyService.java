@@ -46,8 +46,8 @@ public class CompanyService {
     }
 
     public Company update(String id, Company updatedCompany) {
-        int numberOfDeletedEmployee = remove(id);
-        if (numberOfDeletedEmployee == 0) {
+        Company originalCompany = companyRepository.findById(id);
+        if (originalCompany == null) {
             return null;
         }
         updatedCompany.setId(id);
