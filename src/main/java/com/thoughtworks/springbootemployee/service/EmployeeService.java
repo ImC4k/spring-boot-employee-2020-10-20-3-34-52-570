@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.ResourceNotFoundException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,8 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    public Employee getOne(String id) {
-        return employeeRepository.findById(id).orElse(null);
+    public Employee getOne(String id) throws ResourceNotFoundException {
+        return employeeRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
     }
 
     public List<Employee> getWithPagination(int pageNumber, int pageSize) {
@@ -39,17 +40,21 @@ public class EmployeeService {
         return employeeRepository.findAllByGender(gender);
     }
 
-    public Employee update(String id, Employee updatedEmployee) {
-        Employee originalEmployee = employeeRepository.findById(id).orElse(null);
-        if (originalEmployee == null) {
-            return null;
-        }
+    public Employee update(String id, Employee updatedEmployee) throws ResourceNotFoundException {
+        employeeRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
         updatedEmployee.setId(id);
         employeeRepository.save(updatedEmployee);
         return updatedEmployee;
     }
 
-    public void remove(String id) {
-        employeeRepository.deleteById(id);
+    public void remove(String id) throws ResourceNotFoundException {
+        try {
+            if (employeeRepository.findById(id).isPresent()) {
+                employeeRepository.deleteById(id);
+                return;
+            }
+        }
+        catch(Exception ignore) {}
+        throw new ResourceNotFoundException();
     }
 }

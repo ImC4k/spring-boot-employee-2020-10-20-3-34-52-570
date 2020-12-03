@@ -63,7 +63,7 @@ public class EmployeeController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteEmployee(@PathVariable String id) throws ReflectiveOperationException{
+    public void deleteEmployee(@PathVariable String id) throws ResourceNotFoundException{
         employeeService.remove(id);
     }
 
