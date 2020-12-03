@@ -7,12 +7,12 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 public class Company {
     @MongoId
     private String id;
-    private String name;
+    private String companyName;
     private String address;
 
-    public Company(String id, String name, String address) {
+    public Company(String id, String companyName, String address) {
         this.id = id;
-        this.name = name;
+        this.companyName = companyName;
         this.address = address;
     }
 
@@ -26,12 +26,12 @@ public class Company {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public String getAddress() {
@@ -46,7 +46,7 @@ public class Company {
     public boolean equals(Object obj) {
         if (obj instanceof Company) {
             return this.id.equals(((Company) obj).getId()) &&
-                    this.name.equals(((Company) obj).getName()) &&
+                    this.companyName.equals(((Company) obj).getCompanyName()) &&
                     this.address.equals(((Company) obj).getAddress());
         }
         return super.equals(obj);
