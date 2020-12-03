@@ -21,7 +21,7 @@ public class EmployeeService {
     }
 
     public Employee getOne(String id) {
-        return employeeRepository.findById(id);
+        return employeeRepository.findById(id).orElse(null);
     }
 
     public List<Employee> getWithPagination(int pageNumber, int pageSize) {
@@ -41,15 +41,19 @@ public class EmployeeService {
     }
 
     public Employee update(String id, Employee updatedEmployee) {
-        Employee originalEmployee = employeeRepository.findById(id);
+        Employee originalEmployee = employeeRepository.findById(id).orElse(null);
         if (originalEmployee == null) {
             return null;
         }
-        updatedEmployee.setId(id);
-        return employeeRepository.save(updatedEmployee);
+        originalEmployee.setName(updatedEmployee.getName());
+        originalEmployee.setAge(updatedEmployee.getAge());
+        originalEmployee.setGender(updatedEmployee.getGender());
+        originalEmployee.setSalary(updatedEmployee.getSalary());
+        employeeRepository.save(originalEmployee);
+        return originalEmployee;
     }
 
-    public Integer remove(String id) {
-        return employeeRepository.remove(id);
+    public void remove(String id) {
+        employeeRepository.deleteById(id);
     }
 }

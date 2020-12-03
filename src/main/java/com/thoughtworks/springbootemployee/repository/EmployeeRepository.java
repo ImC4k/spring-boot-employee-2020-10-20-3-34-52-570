@@ -1,34 +1,13 @@
 package com.thoughtworks.springbootemployee.repository;
 
 import com.thoughtworks.springbootemployee.model.Employee;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-@Repository
-public class EmployeeRepository {
-    private final List<Employee> employees = new ArrayList<>();
-
-    public List<Employee> findAll() {
-        return this.employees;
-    }
-
-    public Employee findById(String id) {
-        return findAll().stream().filter(employee -> employee.getId().equals(id)).findFirst().orElse(null);
-    }
-
-    public Employee save(Employee newEmployee) {
-        findAll().add(newEmployee);
-        return newEmployee;
-    }
-
-    public Integer remove(String id) {
-        Employee employeeWithId = findAll().stream().filter(employee -> employee.getId().equals(id)).findFirst().orElse(null);
-        if (employeeWithId == null) {
-            return 0;
-        }
-        findAll().remove(employeeWithId);
-        return 1;
-    }
+public interface EmployeeRepository extends MongoRepository<Employee, String> {
+    List<Employee> findAllByGender(String gender);
+    List<Employee> findAllByAge(Integer age);
+    Optional<Employee> findByName(String name);
 }
