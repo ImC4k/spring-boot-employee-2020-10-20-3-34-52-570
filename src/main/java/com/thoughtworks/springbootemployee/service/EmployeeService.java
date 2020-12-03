@@ -20,9 +20,8 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-
     public Employee getOne(String id) {
-        return employeeRepository.findOne(id);
+        return employeeRepository.findById(id);
     }
 
     public List<Employee> getWithPagination(int pageNumber, int pageSize) {
@@ -34,7 +33,7 @@ public class EmployeeService {
     }
 
     public Employee create(Employee newEmployee) {
-        return employeeRepository.create(newEmployee);
+        return employeeRepository.save(newEmployee);
     }
 
     public List<Employee> getWithGenderFilter(String gender) {
@@ -47,7 +46,7 @@ public class EmployeeService {
             return null;
         }
         updatedEmployee.setId(id);
-        return employeeRepository.create(updatedEmployee);
+        return employeeRepository.save(updatedEmployee);
     }
 
     public Integer remove(String id) {

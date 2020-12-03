@@ -18,7 +18,7 @@ public class CompanyService {
     }
 
     public Company getOne(String id) {
-        return companyRepository.findOne(id);
+        return companyRepository.findById(id);
     }
 
     public List<Company> getWithPagination(int pageNumber, int pageSize) {
@@ -30,7 +30,7 @@ public class CompanyService {
     }
 
     public List<Employee> getEmployeesFrom(String companyId) {
-        Company targetCompany = companyRepository.findOne(companyId);
+        Company targetCompany = companyRepository.findById(companyId);
         if (targetCompany == null) {
             return null;
         }
@@ -38,7 +38,7 @@ public class CompanyService {
     }
 
     public Company create(Company newCompany) {
-        return companyRepository.create(newCompany);
+        return companyRepository.save(newCompany);
     }
 
     public Integer remove(String id) {
@@ -51,6 +51,6 @@ public class CompanyService {
             return null;
         }
         updatedCompany.setId(id);
-        return companyRepository.create(updatedCompany);
+        return companyRepository.save(updatedCompany);
     }
 }

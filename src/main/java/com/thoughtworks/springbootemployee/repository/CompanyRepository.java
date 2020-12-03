@@ -14,11 +14,11 @@ public class CompanyRepository {
         return this.companies;
     }
 
-    public Company findOne(String id) {
+    public Company findById(String id) {
         return companies.stream().filter(company -> company.getId().equals(id)).findFirst().orElse(null);
     }
 
-    public Company create(Company newCompany) {
+    public Company save(Company newCompany) {
         findAll().add(newCompany);
         return newCompany;
     }

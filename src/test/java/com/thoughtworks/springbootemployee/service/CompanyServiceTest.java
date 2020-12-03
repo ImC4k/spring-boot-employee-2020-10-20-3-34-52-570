@@ -55,7 +55,7 @@ class CompanyServiceTest {
     void should_return_the_company_when_getOne_given_a_valid_company_id() {
         //given
         Company expected = new Company("123", "test", "addr", new ArrayList<>());
-        when(companyRepository.findOne(any())).thenReturn(expected);
+        when(companyRepository.findById(any())).thenReturn(expected);
 
         //when
         final Company actual = companyService.getOne("123");
@@ -68,7 +68,7 @@ class CompanyServiceTest {
     void should_return_null_when_getOne_given_a_invalid_company_id() {
         //given
         Company expected = new Company("123", "test", "addr", new ArrayList<>());
-        when(companyRepository.findOne("456")).thenReturn(null);
+        when(companyRepository.findById("456")).thenReturn(null);
 
         //when
         final Company actual = companyService.getOne("456");
@@ -106,7 +106,7 @@ class CompanyServiceTest {
         employeesFromCompanyX.add(employee3);
         employeesFromCompanyX.add(employee4);
         Company company = new Company("5", "company x", "addr 5", employeesFromCompanyX);
-        when(companyRepository.findOne(anyString())).thenReturn(company);
+        when(companyRepository.findById(anyString())).thenReturn(company);
 
         //when
         List<Employee> actualList = companyService.getEmployeesFrom("5");
@@ -131,12 +131,12 @@ class CompanyServiceTest {
     void should_return_created_company_when_create_given_no_company_in_database_and_a_new_company() {
         //given
         Company company = new Company("123", "test", "addr", new ArrayList<>());
-        when(companyRepository.create(company)).thenReturn(company);
+        when(companyRepository.save(company)).thenReturn(company);
 
         //when
         companyService.create(company);
         final ArgumentCaptor<Company> companyArgumentCaptor = ArgumentCaptor.forClass(Company.class);
-        verify(companyRepository, times(1)).create(companyArgumentCaptor.capture());
+        verify(companyRepository, times(1)).save(companyArgumentCaptor.capture());
 
         //then
         final Company actual = companyArgumentCaptor.getValue();
@@ -149,13 +149,13 @@ class CompanyServiceTest {
         Company updatedCompany = new Company("3", "new name", "addr", new ArrayList<>());
         Company expected = new Company("2", "new name", "addr", new ArrayList<>());
         when(companyRepository.findAll()).thenReturn(createDummyCompanyies());
-        when(companyRepository.create(any())).thenCallRealMethod();
+        when(companyRepository.save(any())).thenCallRealMethod();
         when(companyService.remove(any())).thenCallRealMethod();
 
         //when
         companyService.update("2", updatedCompany);
         final ArgumentCaptor<Company> companyArgumentCaptor = ArgumentCaptor.forClass(Company.class);
-        verify(companyRepository, times(1)).create(companyArgumentCaptor.capture());
+        verify(companyRepository, times(1)).save(companyArgumentCaptor.capture());
 
         //then
         final Company actual = companyArgumentCaptor.getValue();

@@ -54,7 +54,7 @@ class EmployeeServiceTest {
     void should_return_the_employee_when_getOne_given_a_valid_employee_id() {
         //given
         Employee expected = new Employee("123", "test", 16, "male", 1000);
-        when(employeeRepository.findOne(any())).thenReturn(expected);
+        when(employeeRepository.findById(any())).thenReturn(expected);
 
         //when
         final Employee actual = employeeService.getOne("123");
@@ -67,7 +67,7 @@ class EmployeeServiceTest {
     void should_return_null_when_getOne_given_a_invalid_employee_id() {
         //given
         Employee expected = new Employee("123", "test", 16, "male", 1000);
-        when(employeeRepository.findOne("456")).thenReturn(null);
+        when(employeeRepository.findById("456")).thenReturn(null);
 
         //when
         final Employee actual = employeeService.getOne("456");
@@ -108,12 +108,12 @@ class EmployeeServiceTest {
     void should_return_created_employee_when_create_given_no_employee_in_database_and_a_new_employee() {
         //given
         Employee employee = new Employee("123", "test", 15, "male", 10000);
-        when(employeeRepository.create(employee)).thenReturn(employee);
+        when(employeeRepository.save(employee)).thenReturn(employee);
 
         //when
         employeeService.create(employee);
         final ArgumentCaptor<Employee> employeeArgumentCaptor = ArgumentCaptor.forClass(Employee.class);
-        verify(employeeRepository, times(1)).create(employeeArgumentCaptor.capture());
+        verify(employeeRepository, times(1)).save(employeeArgumentCaptor.capture());
 
         //then
         final Employee actual = employeeArgumentCaptor.getValue();
@@ -126,13 +126,13 @@ class EmployeeServiceTest {
         Employee updatedEmployee = new Employee("3", "new name", 15, "male", 999);
         Employee expected = new Employee("2", "new name", 15, "male", 999);
         when(employeeRepository.findAll()).thenReturn(createDummyEmployees());
-        when(employeeRepository.create(any())).thenCallRealMethod();
+        when(employeeRepository.save(any())).thenCallRealMethod();
         when(employeeService.remove(any())).thenCallRealMethod();
 
         //when
         employeeService.update("2", updatedEmployee);
         final ArgumentCaptor<Employee> employeeArgumentCaptor = ArgumentCaptor.forClass(Employee.class);
-        verify(employeeRepository, times(1)).create(employeeArgumentCaptor.capture());
+        verify(employeeRepository, times(1)).save(employeeArgumentCaptor.capture());
 
         //then
         final Employee actual = employeeArgumentCaptor.getValue();

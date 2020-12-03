@@ -14,11 +14,11 @@ public class EmployeeRepository {
         return this.employees;
     }
 
-    public Employee findOne(String id) {
+    public Employee findById(String id) {
         return employees.stream().filter(employee -> employee.getId().equals(id)).findFirst().orElse(null);
     }
 
-    public Employee create(Employee newEmployee) {
+    public Employee save(Employee newEmployee) {
         findAll().add(newEmployee);
         return newEmployee;
     }
