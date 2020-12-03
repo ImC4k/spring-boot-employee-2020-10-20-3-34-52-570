@@ -52,11 +52,14 @@ public class CompanyController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Company> updateCompany(@PathVariable String id, @RequestBody Company companyUpdate) {
-        Company updatedCompany = companyService.update(id, companyUpdate);
-        if (updatedCompany == null) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        try {
+            Company updatedCompany = companyService.update(id, companyUpdate);
+            if (updatedCompany != null) {
+                return new ResponseEntity<>(updatedCompany, HttpStatus.OK);
+            }
         }
-        return new ResponseEntity<>(updatedCompany, HttpStatus.OK);
+        catch(Exception ignored) {}
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/{id}")
