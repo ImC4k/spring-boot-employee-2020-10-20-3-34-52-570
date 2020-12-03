@@ -25,12 +25,9 @@ public class CompanyService {
         }).collect(Collectors.toList());
     }
 
-    public CompanyResponse getOne(String id) {
+    public CompanyResponse getOne(String id) throws ResourceNotFoundException {
 
-        Company company = companyRepository.findById(id).orElse(null);
-        if (company == null) {
-            return null;
-        }
+        Company company = companyRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
         List<Employee> employeesFromThisCompany = getEmployeesFrom(company.getId());
         return new CompanyResponse(company.getId(), company.getCompanyName(), employeesFromThisCompany);
     }
@@ -61,11 +58,8 @@ public class CompanyService {
         throw new ResourceNotFoundException();
     }
 
-    public Company update(String id, Company updatedCompany) {
-        Company originalCompany = companyRepository.findById(id).orElse(null);
-        if (originalCompany == null) {
-            return null;
-        }
+    public Company update(String id, Company updatedCompany) throws ResourceNotFoundException {
+        companyRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
         updatedCompany.setId(id);
         companyRepository.save(updatedCompany);
         return updatedCompany;

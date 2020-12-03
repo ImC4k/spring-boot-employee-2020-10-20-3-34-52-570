@@ -58,7 +58,7 @@ class CompanyServiceTest {
     }
 
     @Test
-    void should_return_the_company_when_getOne_given_a_valid_company_id() {
+    void should_return_the_company_when_getOne_given_a_valid_company_id() throws ResourceNotFoundException {
         //given
         Company expected = new Company("123", "test");
         when(companyRepository.findById(any())).thenReturn(Optional.of(expected));
@@ -137,7 +137,7 @@ class CompanyServiceTest {
     }
 
     @Test
-    void should_return_updated_company_when_update_given_new_company_and_even_though_update_company_id_mismatch() {
+    void should_return_updated_company_when_update_given_new_company_and_even_though_update_company_id_mismatch() throws ResourceNotFoundException {
         //given
         Company updatedCompany = new Company("3", "new name");
         Company expected = new Company("2", "new name");
