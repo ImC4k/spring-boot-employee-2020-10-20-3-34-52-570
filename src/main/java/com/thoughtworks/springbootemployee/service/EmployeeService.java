@@ -44,7 +44,7 @@ public class EmployeeService {
         if (originalEmployee == null) {
             return null;
         }
-        updatedEmployee.setId(originalEmployee.getId());
+        updatedEmployee.setId(id);
         employeeRepository.save(updatedEmployee);
         return updatedEmployee;
     }
