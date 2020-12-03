@@ -29,10 +29,10 @@ class EmployeeServiceTest {
 
     private List<Employee> createDummyEmployees() {
         List<Employee> allEmployees = new ArrayList<>();
-        Employee employee1 = new Employee("1", "test", 16, "male", 1000);
-        Employee employee2 = new Employee("2", "test", 16, "male", 1000);
-        Employee employee3 = new Employee("3", "test", 16, "female", 1000);
-        Employee employee4 = new Employee("4", "test", 16, "female", 1000);
+        Employee employee1 = new Employee("1", "test", 16, "male", 1000, "0");
+        Employee employee2 = new Employee("2", "test", 16, "male", 1000, "0");
+        Employee employee3 = new Employee("3", "test", 16, "female", 1000, "0");
+        Employee employee4 = new Employee("4", "test", 16, "female", 1000, "0");
         allEmployees.add(employee1);
         allEmployees.add(employee2);
         allEmployees.add(employee3);
@@ -43,7 +43,7 @@ class EmployeeServiceTest {
     @Test
     void should_return_all_employees_when_getAll_given_all_employees() {
         //given
-        final List<Employee> expected = Collections.singletonList(new Employee("123", "test", 16, "male", 1000));
+        final List<Employee> expected = Collections.singletonList(new Employee("123", "test", 16, "male", 1000, "0"));
         when(employeeRepository.findAll()).thenReturn(expected);
 
         //when
@@ -56,7 +56,7 @@ class EmployeeServiceTest {
     @Test
     void should_return_the_employee_when_getOne_given_a_valid_employee_id() {
         //given
-        Employee expected = new Employee("123", "test", 16, "male", 1000);
+        Employee expected = new Employee("123", "test", 16, "male", 1000, "0");
         when(employeeRepository.findById(any())).thenReturn(java.util.Optional.of(expected));
 
         //when
@@ -108,7 +108,7 @@ class EmployeeServiceTest {
     @Test
     void should_return_created_employee_when_create_given_no_employee_in_database_and_a_new_employee() {
         //given
-        Employee employee = new Employee("123", "test", 15, "male", 10000);
+        Employee employee = new Employee("123", "test", 15, "male", 10000, "0");
         when(employeeRepository.save(employee)).thenReturn(employee);
 
         //when
@@ -124,9 +124,10 @@ class EmployeeServiceTest {
     @Test
     void should_return_updated_employee_when_update_given_new_employee_and_even_though_update_employee_id_mismatch() {
         //given
-        Employee updatedEmployee = new Employee("3", "new name", 15, "male", 999);
-        Employee expected = new Employee("2", "new name", 15, "male", 999);
-        when(employeeRepository.findById("2")).thenReturn(java.util.Optional.of(expected));
+        Employee updatedEmployee = new Employee("3", "new name", 15, "male", 999, "0");
+        Employee expected = new Employee("2", "new name", 15, "male", 999, "0");
+        Employee originalEmployee = new Employee("2", "new name", 14, "male", 999, "0");
+        when(employeeRepository.findById("2")).thenReturn(Optional.of(originalEmployee));
 
         //when
         employeeService.update("2", updatedEmployee);
@@ -142,7 +143,7 @@ class EmployeeServiceTest {
     @Test
     void should_return_null_when_update_given_new_employee_and_id_does_not_exist() {
         //given
-        Employee updatedEmployee = new Employee("5", "new name", 15, "male", 999);
+        Employee updatedEmployee = new Employee("5", "new name", 15, "male", 999, "0");
         when(employeeRepository.findById("5")).thenReturn(Optional.empty());
 
         //when

@@ -1,26 +1,29 @@
 package com.thoughtworks.springbootemployee.model;
 
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @Document
 public class Employee {
-    @MongoId
+    @MongoId(FieldType.OBJECT_ID)
     private String id;
     private String name;
     private Integer age;
     private String gender;
     private Integer salary;
+    private String companyId;
 
     public Employee() {
     }
 
-    public Employee(String id, String name, Integer age, String gender, Integer salary) {
+    public Employee(String id, String name, Integer age, String gender, Integer salary, String companyId) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.gender = gender;
         this.salary = salary;
+        this.companyId = companyId;
     }
 
     public String getId() {
@@ -63,6 +66,14 @@ public class Employee {
         this.salary = salary;
     }
 
+    public String getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Employee) {
@@ -70,7 +81,8 @@ public class Employee {
                     this.name.equals(((Employee) obj).getName()) &&
                     this.age.equals(((Employee) obj).getAge()) &&
                     this.gender.equals(((Employee) obj).getGender()) &&
-                    this.salary.equals(((Employee) obj).getSalary());
+                    this.salary.equals(((Employee) obj).getSalary()) &&
+                    this.companyId.equals(((Employee) obj).getCompanyId());
         }
         return super.equals(obj);
     }
