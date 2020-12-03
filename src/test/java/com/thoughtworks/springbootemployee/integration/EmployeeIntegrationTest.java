@@ -174,7 +174,7 @@ class EmployeeIntegrationTest {
                                 .contentType(APPLICATION_JSON)
                                 .content(employeeAsJson)
                 )
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isString())
                 .andExpect(jsonPath("$.name").value("John"))
                 .andExpect(jsonPath("$.age").value(23))
@@ -287,5 +287,17 @@ class EmployeeIntegrationTest {
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().string("[]"));
+    }
+
+    @Test
+    void should_return_not_found_when_delete_given_invalid_id() throws Exception {
+        //given
+        //when
+        //then
+        mockMvc
+                .perform(
+                        delete("/employees/1000")
+                )
+                .andExpect(status().isNotFound());
     }
 }
