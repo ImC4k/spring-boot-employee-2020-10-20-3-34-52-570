@@ -1,6 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
-import com.thoughtworks.springbootemployee.model.CompanyCreate;
+import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.CompanyResponse;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
@@ -30,23 +30,23 @@ class CompanyServiceTest {
     @Mock
     private EmployeeRepository employeeRepository;
 
-    private List<CompanyCreate> createDummyCompanyies() {
-        List<CompanyCreate> allCompanies = new ArrayList<>();
-        CompanyCreate companyCreate1 = new CompanyCreate("1", "company a");
-        CompanyCreate companyCreate2 = new CompanyCreate("2", "company b");
-        CompanyCreate companyCreate3 = new CompanyCreate("3", "company c");
-        CompanyCreate companyCreate4 = new CompanyCreate("4", "company d");
-        allCompanies.add(companyCreate1);
-        allCompanies.add(companyCreate2);
-        allCompanies.add(companyCreate3);
-        allCompanies.add(companyCreate4);
+    private List<Company> createDummyCompanyies() {
+        List<Company> allCompanies = new ArrayList<>();
+        Company company1 = new Company("1", "company a");
+        Company company2 = new Company("2", "company b");
+        Company company3 = new Company("3", "company c");
+        Company company4 = new Company("4", "company d");
+        allCompanies.add(company1);
+        allCompanies.add(company2);
+        allCompanies.add(company3);
+        allCompanies.add(company4);
         return allCompanies;
     }
 
     @Test
     void should_return_all_companies_when_getAll_given_all_companies() {
         //given
-        final List<CompanyCreate> expected = Collections.singletonList(new CompanyCreate("123", "test"));
+        final List<Company> expected = Collections.singletonList(new Company("123", "test"));
         when(companyRepository.findAll()).thenReturn(expected);
 
         //when
@@ -59,7 +59,7 @@ class CompanyServiceTest {
     @Test
     void should_return_the_company_when_getOne_given_a_valid_company_id() {
         //given
-        CompanyCreate expected = new CompanyCreate("123", "test");
+        Company expected = new Company("123", "test");
         when(companyRepository.findById(any())).thenReturn(Optional.of(expected));
 
         //when
@@ -73,7 +73,7 @@ class CompanyServiceTest {
     @Test
     void should_return_null_when_getOne_given_a_invalid_company_id() {
         //given
-        CompanyCreate expected = new CompanyCreate("123", "test");
+        Company expected = new Company("123", "test");
         when(companyRepository.findById("456")).thenReturn(Optional.empty());
 
         //when
@@ -123,33 +123,33 @@ class CompanyServiceTest {
     @Test
     void should_return_created_company_when_create_given_no_company_in_database_and_a_new_company() {
         //given
-        CompanyCreate companyCreate = new CompanyCreate("123", "test");
-        when(companyRepository.save(companyCreate)).thenReturn(companyCreate);
+        Company company = new Company("123", "test");
+        when(companyRepository.save(company)).thenReturn(company);
 
         //when
-        companyService.create(companyCreate);
-        final ArgumentCaptor<CompanyCreate> companyArgumentCaptor = ArgumentCaptor.forClass(CompanyCreate.class);
+        companyService.create(company);
+        final ArgumentCaptor<Company> companyArgumentCaptor = ArgumentCaptor.forClass(Company.class);
         verify(companyRepository, times(1)).save(companyArgumentCaptor.capture());
 
         //then
-        final CompanyCreate actual = companyArgumentCaptor.getValue();
-        assertEquals(companyCreate, actual);
+        final Company actual = companyArgumentCaptor.getValue();
+        assertEquals(company, actual);
     }
 
     @Test
     void should_return_updated_company_when_update_given_new_company_and_even_though_update_company_id_mismatch() {
         //given
-        CompanyCreate updatedCompanyCreate = new CompanyCreate("3", "new name");
-        CompanyCreate expected = new CompanyCreate("2", "new name");
+        Company updatedCompany = new Company("3", "new name");
+        Company expected = new Company("2", "new name");
         when(companyRepository.findById("2")).thenReturn(Optional.of(expected));
 
         //when
-        companyService.update("2", updatedCompanyCreate);
-        final ArgumentCaptor<CompanyCreate> companyArgumentCaptor = ArgumentCaptor.forClass(CompanyCreate.class);
+        companyService.update("2", updatedCompany);
+        final ArgumentCaptor<Company> companyArgumentCaptor = ArgumentCaptor.forClass(Company.class);
         verify(companyRepository, times(1)).save(companyArgumentCaptor.capture());
 
         //then
-        final CompanyCreate actual = companyArgumentCaptor.getValue();
+        final Company actual = companyArgumentCaptor.getValue();
         assertNotNull(actual);
         assertEquals(expected, actual);
     }
@@ -157,11 +157,11 @@ class CompanyServiceTest {
     @Test
     void should_return_null_when_update_given_new_company_and_id_does_not_exist() {
         //given
-        CompanyCreate updatedCompanyCreate = new CompanyCreate("5", "new name");
+        Company updatedCompany = new Company("5", "new name");
         when(companyRepository.findById(any())).thenReturn(Optional.empty());
 
         //when
-        CompanyCreate actual = companyService.update("5", updatedCompanyCreate);
+        Company actual = companyService.update("5", updatedCompany);
 
         //then
         assertNull(actual);

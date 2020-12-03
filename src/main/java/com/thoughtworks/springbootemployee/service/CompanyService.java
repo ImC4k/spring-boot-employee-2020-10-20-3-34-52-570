@@ -1,6 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
-import com.thoughtworks.springbootemployee.model.CompanyCreate;
+import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.CompanyResponse;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
@@ -17,8 +17,8 @@ public class CompanyService {
     @Autowired private EmployeeRepository employeeRepository;
 
     public List<CompanyResponse> getAll() {
-        List<CompanyCreate> companyCreates = companyRepository.findAll();
-        return companyCreates.stream().map(companyCreate -> {
+        List<Company> companies = companyRepository.findAll();
+        return companies.stream().map(companyCreate -> {
             List<Employee> employees = getEmployeesFrom(companyCreate.getId());
             return new CompanyResponse(companyCreate.getId(), companyCreate.getCompanyName(), employees);
         }).collect(Collectors.toList());
@@ -26,12 +26,12 @@ public class CompanyService {
 
     public CompanyResponse getOne(String id) {
 
-        CompanyCreate companyCreate = companyRepository.findById(id).orElse(null);
-        if (companyCreate == null) {
+        Company company = companyRepository.findById(id).orElse(null);
+        if (company == null) {
             return null;
         }
-        List<Employee> employeesFromThisCompany = getEmployeesFrom(companyCreate.getId());
-        return new CompanyResponse(companyCreate.getId(), companyCreate.getCompanyName(), employeesFromThisCompany);
+        List<Employee> employeesFromThisCompany = getEmployeesFrom(company.getId());
+        return new CompanyResponse(company.getId(), company.getCompanyName(), employeesFromThisCompany);
     }
 
     public List<CompanyResponse> getWithPagination(int pageNumber, int pageSize) {
@@ -45,21 +45,21 @@ public class CompanyService {
         return employeeRepository.findAllByCompanyId(companyId);
     }
 
-    public CompanyCreate create(CompanyCreate newCompanyCreate) {
-        return companyRepository.save(newCompanyCreate);
+    public Company create(Company newCompany) {
+        return companyRepository.save(newCompany);
     }
 
     public void remove(String id) {
         companyRepository.deleteById(id);
     }
 
-    public CompanyCreate update(String id, CompanyCreate updatedCompanyCreate) {
-        CompanyCreate originalCompanyCreate = companyRepository.findById(id).orElse(null);
-        if (originalCompanyCreate == null) {
+    public Company update(String id, Company updatedCompany) {
+        Company originalCompany = companyRepository.findById(id).orElse(null);
+        if (originalCompany == null) {
             return null;
         }
-        updatedCompanyCreate.setId(id);
-        companyRepository.save(updatedCompanyCreate);
-        return updatedCompanyCreate;
+        updatedCompany.setId(id);
+        companyRepository.save(updatedCompany);
+        return updatedCompany;
     }
 }

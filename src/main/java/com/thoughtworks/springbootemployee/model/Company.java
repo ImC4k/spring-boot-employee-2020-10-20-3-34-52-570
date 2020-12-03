@@ -4,17 +4,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @Document
-public class CompanyCreate {
+public class Company {
     @MongoId
     private String id;
     private String companyName;
 
-    public CompanyCreate(String id, String companyName) {
+    public Company(String id, String companyName) {
         this.id = id;
         this.companyName = companyName;
     }
 
-    public CompanyCreate() {}
+    public Company() {}
 
     public String getId() {
         return id;
@@ -34,9 +34,9 @@ public class CompanyCreate {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof CompanyCreate) {
-            return this.id.equals(((CompanyCreate) obj).getId()) &&
-                    this.companyName.equals(((CompanyCreate) obj).getCompanyName());
+        if (obj instanceof Company) {
+            return this.id.equals(((Company) obj).getId()) &&
+                    this.companyName.equals(((Company) obj).getCompanyName());
         }
         return super.equals(obj);
     }

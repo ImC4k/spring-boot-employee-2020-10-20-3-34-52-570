@@ -1,7 +1,7 @@
 package com.thoughtworks.springbootemployee.repository;
 
-import com.thoughtworks.springbootemployee.model.CompanyCreate;
+import com.thoughtworks.springbootemployee.model.Company;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface CompanyRepository extends MongoRepository<CompanyCreate, String> {
+public interface CompanyRepository extends MongoRepository<Company, String> {
 }
