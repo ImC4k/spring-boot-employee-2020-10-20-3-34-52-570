@@ -255,7 +255,7 @@ class EmployeeIntegrationTest {
     }
 
     @Test
-    void should_return_ok_when_delete_given_an_employee_is_deleted() throws Exception {
+    void should_return_no_content_when_delete_given_an_employee_is_deleted() throws Exception {
         //given
         Employee employee = new Employee("Calvin", 19, "male", 999, "3");
         Employee expected = employeeRepository.save(employee);
@@ -265,7 +265,7 @@ class EmployeeIntegrationTest {
                 .perform(
                         delete("/employees/" + expected.getId())
                 )
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test

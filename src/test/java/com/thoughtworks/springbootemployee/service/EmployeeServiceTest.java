@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.ResourceNotFoundException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
@@ -54,7 +55,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_the_employee_when_getOne_given_a_valid_employee_id() {
+    void should_return_the_employee_when_getOne_given_a_valid_employee_id() throws ResourceNotFoundException {
         //given
         Employee expected = new Employee("123", "test", 16, "male", 1000, "0");
         when(employeeRepository.findById(any())).thenReturn(java.util.Optional.of(expected));
@@ -67,15 +68,15 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_null_when_getOne_given_a_invalid_employee_id() {
+    void should_throw_ResourceNotFoundException_when_getOne_given_a_invalid_employee_id() {
         //given
         when(employeeRepository.findById(any())).thenReturn(Optional.empty());
 
         //when
-        final Employee actual = employeeService.getOne("456");
+        Exception exception = assertThrows(ResourceNotFoundException.class, () -> employeeService.getOne("456"));
 
         //then
-        assertNull(actual);
+        assertEquals("Resource not found", exception.getMessage());
     }
 
     @Test
@@ -120,7 +121,7 @@ class EmployeeServiceTest {
     }
     
     @Test
-    void should_return_updated_employee_when_update_given_new_employee_and_even_though_update_employee_id_mismatch() {
+    void should_return_updated_employee_when_update_given_new_employee_and_even_though_update_employee_id_mismatch() throws ResourceNotFoundException {
         //given
         Employee updatedEmployee = new Employee("3", "new name", 15, "male", 999, "0");
         Employee expected = new Employee("2", "new name", 15, "male", 999, "0");
@@ -139,25 +140,25 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_null_when_update_given_new_employee_and_id_does_not_exist() {
+    void should_throw_ResourceNotFoundException_when_update_given_new_employee_and_id_does_not_exist() {
         //given
         Employee updatedEmployee = new Employee("5", "new name", 15, "male", 999, "0");
         when(employeeRepository.findById("5")).thenReturn(Optional.empty());
 
         //when
-        Employee actual = employeeService.update("5", updatedEmployee);
+        Exception exception = assertThrows(ResourceNotFoundException.class, () -> employeeService.update("5", updatedEmployee));
 
         //then
-        assertNull(actual);
+        assertEquals("Resource not found", exception.getMessage());
     }
 
     @Test
-    void should_return_1_and_have_an_employee_removed_when_remove() {
+    void should_throw_ResourceNotFoundException_and_have_an_employee_removed_when_remove() throws ResourceNotFoundException {
         //given
         //when
-        employeeService.remove("1");
+        Exception exception = assertThrows(ResourceNotFoundException.class, () -> employeeService.remove("1"));
 
         //then
-        verify(employeeRepository, times(1)).deleteById("1");
+        assertEquals("Resource not found", exception.getMessage());
     }
 }
