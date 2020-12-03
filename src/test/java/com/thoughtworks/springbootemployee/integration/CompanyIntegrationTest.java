@@ -97,4 +97,55 @@ class CompanyIntegrationTest {
         mockMvc.perform(get("/companies/100000"))
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    void should_return_paginated_companyList_when_getWithPagination_given_longer_than_pageSize_companyList() throws Exception {
+        //given
+        companyRepository.save(new Company("paypal"));
+        companyRepository.save(new Company("tesla"));
+        companyRepository.save(new Company("spacex"));
+        companyRepository.save(new Company("boring"));
+        companyRepository.save(new Company("openai"));
+
+        //when
+        //then
+        mockMvc.perform(get("/companies?page=1&pageSize=2"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].id").isString())
+                .andExpect(jsonPath("$[0].companyName").value("spacex"))
+                .andExpect(jsonPath("$[1].id").isString())
+                .andExpect(jsonPath("$[1].companyName").value("boring"));
+    }
+
+    @Test
+    void should_return_paginated_companyList_when_getWithPagination_given_shorter_than_pageSize_companyList() throws Exception {
+        //given
+        companyRepository.save(new Company("paypal"));
+        companyRepository.save(new Company("tesla"));
+
+        //when
+        //then
+        mockMvc.perform(get("/companies?page=0&pageSize=3"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].id").isString())
+                .andExpect(jsonPath("$[0].companyName").value("paypal"))
+                .andExpect(jsonPath("$[1].id").isString())
+                .andExpect(jsonPath("$[1].companyName").value("tesla"));
+    }
+
+    @Test
+    void should_return_emptyList_companyList_when_getWithPagination_given_shorter_than_pageSize_companyList() throws Exception {
+        //given
+        companyRepository.save(new Company("paypal"));
+        companyRepository.save(new Company("tesla"));
+
+        //when
+        //then
+        mockMvc.perform(get("/companies?page=2&pageSize=3"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON))
+                .andExpect(content().string("[]"));
+    }
 }
