@@ -25,11 +25,14 @@ public class CompanyController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CompanyResponse> getOne(@PathVariable String id) {
-        CompanyResponse createdCompany = companyService.getOne(id);
-        if (createdCompany == null) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        try {
+            CompanyResponse createdCompany = companyService.getOne(id);
+            if (createdCompany != null) {
+                return new ResponseEntity<>(createdCompany, HttpStatus.OK);
+            }
         }
-        return new ResponseEntity<>(createdCompany, HttpStatus.OK);
+        catch (Exception ignored){}
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(params = {"page", "pageSize"})
