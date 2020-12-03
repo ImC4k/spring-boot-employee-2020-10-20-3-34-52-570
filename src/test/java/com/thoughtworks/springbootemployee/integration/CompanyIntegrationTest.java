@@ -168,7 +168,7 @@ class CompanyIntegrationTest {
                                 .contentType(APPLICATION_JSON)
                                 .content(companyAsJson)
                 )
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isString())
                 .andExpect(jsonPath("$.companyName").value("tesla"));
 
@@ -260,5 +260,17 @@ class CompanyIntegrationTest {
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().string("[]"));
+    }
+
+    @Test
+    void should_return_not_found_when_delete_given_invalid_id() throws Exception {
+        //given
+        //when
+        //then
+        mockMvc
+                .perform(
+                        delete("/companies/1000")
+                )
+                .andExpect(status().isNotFound());
     }
 }
