@@ -251,4 +251,39 @@ class EmployeeIntegrationTest {
                 )
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    void should_return_ok_when_delete_given_an_employee_is_deleted() throws Exception {
+        //given
+        Employee employee = new Employee("Calvin", 19, "male", 999, "3");
+        Employee expected = employeeRepository.save(employee);
+        //when
+        //then
+        mockMvc
+                .perform(
+                        delete("/employees/" + expected.getId())
+                )
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void should_return_empty_list_when_getAll_given_originally_one_employee_but_then_got_deleted() throws Exception {
+        //given
+        Employee employee = new Employee("Calvin", 19, "male", 999, "3");
+        Employee expected = employeeRepository.save(employee);
+
+        //when
+        mockMvc
+                .perform(
+                        delete("/employees/" + expected.getId())
+                );
+
+        //then
+        mockMvc
+                .perform(
+                        get("/employees")
+                )
+                .andExpect(status().isOk())
+                .andExpect(content().string("[]"));
+    }
 }
