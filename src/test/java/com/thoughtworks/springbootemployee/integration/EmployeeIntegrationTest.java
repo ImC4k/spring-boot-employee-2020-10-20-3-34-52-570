@@ -228,7 +228,7 @@ class EmployeeIntegrationTest {
     }
 
     @Test
-    void should_return_not_found_when_update_given_original_employee_in_list() throws Exception {
+    void should_return_not_found_when_update_given_invalid_id() throws Exception {
         //given
         employeeRepository.save(new Employee("Alex", 19, "male", 999, "1"));
         employeeRepository.save(new Employee("Boyd", 19, "male", 999, "2"));
