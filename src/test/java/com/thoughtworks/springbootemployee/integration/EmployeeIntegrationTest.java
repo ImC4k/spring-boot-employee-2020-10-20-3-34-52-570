@@ -74,6 +74,23 @@ class EmployeeIntegrationTest {
     }
 
     @Test
+    void should_particular_employee_when_get_one_given_invalid_id_in_path() throws Exception {
+        //given
+        employeeRepository.save(new Employee("Calvin", 19, "male", 999, "1"));
+        employeeRepository.save(new Employee("Boyd", 19, "male", 999, "2"));
+        Employee employee = new Employee("Calvin", 19, "male", 999, "3");
+        Employee expected = employeeRepository.save(employee);
+        employeeRepository.save(new Employee("David", 19, "male", 999, "4"));
+        employeeRepository.save(new Employee("Elaine", 19, "female", 999, "5"));
+        employeeRepository.save(new Employee("Flora", 19, "female", 999, "6"));
+
+        //when
+        //then
+        mockMvc.perform(get("/employees/100000"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     void should_return_employee_when_create_employee_given_new_employee() throws Exception {
         //given
         String employeeAsJson = "{\n" +
