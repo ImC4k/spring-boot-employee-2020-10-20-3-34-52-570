@@ -41,8 +41,8 @@ public class EmployeeService {
     }
 
     public Employee update(String id, Employee updatedEmployee) {
-        int numberOfDeletedEmployee = remove(id);
-        if (numberOfDeletedEmployee == 0) {
+        Employee originalEmployee = employeeRepository.findById(id);
+        if (originalEmployee == null) {
             return null;
         }
         updatedEmployee.setId(id);

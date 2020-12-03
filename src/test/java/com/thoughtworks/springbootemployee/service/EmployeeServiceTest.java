@@ -125,9 +125,8 @@ class EmployeeServiceTest {
         //given
         Employee updatedEmployee = new Employee("3", "new name", 15, "male", 999);
         Employee expected = new Employee("2", "new name", 15, "male", 999);
-        when(employeeRepository.findAll()).thenReturn(createDummyEmployees());
+        when(employeeRepository.findById("2")).thenReturn(expected);
         when(employeeRepository.save(any())).thenCallRealMethod();
-        when(employeeService.remove(any())).thenCallRealMethod();
 
         //when
         employeeService.update("2", updatedEmployee);
@@ -144,8 +143,7 @@ class EmployeeServiceTest {
     void should_return_null_when_update_given_new_employee_and_id_does_not_exist() {
         //given
         Employee updatedEmployee = new Employee("5", "new name", 15, "male", 999);
-        when(employeeRepository.findAll()).thenReturn(createDummyEmployees());
-        when(employeeService.remove(any())).thenCallRealMethod();
+        when(employeeRepository.findById(any())).thenCallRealMethod();
 
         //when
         Employee actual = employeeService.update("5", updatedEmployee);
