@@ -1,12 +1,11 @@
 package com.thoughtworks.springbootemployee.model;
 
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.FieldType;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @Document
 public class Employee {
-    @MongoId(FieldType.OBJECT_ID)
+    @MongoId
     private String id;
     private String name;
     private Integer age;
