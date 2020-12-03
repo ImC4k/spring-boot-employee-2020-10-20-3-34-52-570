@@ -50,7 +50,7 @@ class EmployeeIntegrationTest {
     }
 
     @Test
-    void should_particular_employee_when_get_one_given_valid_id_in_path() throws Exception {
+    void should_return_particular_employee_when_get_one_given_valid_id_in_path() throws Exception {
         //given
         employeeRepository.save(new Employee("Calvin", 19, "male", 999, "1"));
         employeeRepository.save(new Employee("Boyd", 19, "male", 999, "2"));
@@ -74,7 +74,7 @@ class EmployeeIntegrationTest {
     }
 
     @Test
-    void should_particular_employee_when_get_one_given_invalid_id_in_path() throws Exception {
+    void should_return_not_found_when_get_one_given_invalid_id_in_path() throws Exception {
         //given
         employeeRepository.save(new Employee("Calvin", 19, "male", 999, "1"));
         employeeRepository.save(new Employee("Boyd", 19, "male", 999, "2"));
