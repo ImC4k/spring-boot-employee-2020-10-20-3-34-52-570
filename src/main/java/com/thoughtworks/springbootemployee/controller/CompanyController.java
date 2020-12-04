@@ -1,7 +1,7 @@
 package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.dto.CompanyRequest;
-import com.thoughtworks.springbootemployee.dto.EmployeeResponse;
+import com.thoughtworks.springbootemployee.dto.EmployeeResponseWithoutCompanyId;
 import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
 import com.thoughtworks.springbootemployee.mapper.CompanyMapper;
 import com.thoughtworks.springbootemployee.mapper.EmployeeMapper;
@@ -39,8 +39,8 @@ public class CompanyController {
     }
 
     @GetMapping("/{id}/employees")
-    public List<EmployeeResponse> getCompanyEmployees(@PathVariable("id") String id) {
-        return companyService.getEmployeesFrom(id).stream().map(employeeMapper::toResponse).collect(Collectors.toList());
+    public List<EmployeeResponseWithoutCompanyId> getCompanyEmployees(@PathVariable("id") String id) {
+        return companyService.getEmployeesFrom(id).stream().map(employeeMapper::toResponseWithoutCompanyId).collect(Collectors.toList());
     }
 
     @PostMapping

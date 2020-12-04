@@ -10,11 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class CompanyMapper {
     @Autowired
     private CompanyService companyService;
+    @Autowired
+    private EmployeeMapper employeeMapper;
 
     public Company toEntity(CompanyRequest companyRequest) {
         Company company = new Company();
@@ -24,6 +27,6 @@ public class CompanyMapper {
 
     public CompanyResponse toResponse(Company company) {
         List<Employee> employees = companyService.getEmployeesFrom(company.getId());
-        return new CompanyResponse(company.getId(), company.getCompanyName(), employees);
+        return new CompanyResponse(company.getId(), company.getCompanyName(), employees.stream().map(employeeMapper::toResponseWithoutCompanyId).collect(Collectors.toList()));
     }
 }

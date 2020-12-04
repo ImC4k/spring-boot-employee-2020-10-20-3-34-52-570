@@ -58,7 +58,6 @@ class CompanyIntegrationTest {
                 .andExpect(jsonPath("$[0].employees[0].age").value(19))
                 .andExpect(jsonPath("$[0].employees[0].gender").value("male"))
                 .andExpect(jsonPath("$[0].employees[0].salary").value(999))
-                .andExpect(jsonPath("$[0].employees[0].companyId").value(expected1.getId()))
                 .andExpect(jsonPath("$[1].id").value(expected2.getId()))
                 .andExpect(jsonPath("$[1].companyName").value("SpaceX"))
                 .andExpect(jsonPath("$[1].employeesNumber").value(0));
@@ -85,8 +84,7 @@ class CompanyIntegrationTest {
                 .andExpect(jsonPath("$.employees[0].name").value("Calvin"))
                 .andExpect(jsonPath("$.employees[0].age").value(19))
                 .andExpect(jsonPath("$.employees[0].gender").value("male"))
-                .andExpect(jsonPath("$.employees[0].salary").value(999))
-                .andExpect(jsonPath("$.employees[0].companyId").value(expected1.getId()));
+                .andExpect(jsonPath("$.employees[0].salary").value(999));
     }
 
     @Test

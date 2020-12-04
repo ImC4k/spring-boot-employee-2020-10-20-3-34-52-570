@@ -2,6 +2,7 @@ package com.thoughtworks.springbootemployee.mapper;
 
 import com.thoughtworks.springbootemployee.dto.EmployeeRequest;
 import com.thoughtworks.springbootemployee.dto.EmployeeResponse;
+import com.thoughtworks.springbootemployee.dto.EmployeeResponseWithoutCompanyId;
 import com.thoughtworks.springbootemployee.model.Employee;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
@@ -18,5 +19,11 @@ public class EmployeeMapper {
         EmployeeResponse employeeResponse = new EmployeeResponse();
         BeanUtils.copyProperties(employee, employeeResponse);
         return employeeResponse;
+    }
+
+    public EmployeeResponseWithoutCompanyId toResponseWithoutCompanyId(Employee employee) {
+        EmployeeResponseWithoutCompanyId employeeResponseWithoutCompanyId = new EmployeeResponseWithoutCompanyId();
+        BeanUtils.copyProperties(employee, employeeResponseWithoutCompanyId);
+        return employeeResponseWithoutCompanyId;
     }
 }
