@@ -281,7 +281,7 @@ class CompanyIntegrationTest {
     }
 
     @Test
-    void should_return_not_found_when_delete_given_invalid_id() throws Exception {
+    void should_return_bad_request_when_delete_given_invalid_id() throws Exception {
         //given
         //when
         //then
@@ -289,6 +289,20 @@ class CompanyIntegrationTest {
                 .perform(
                         delete("/companies/1000")
                 )
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void should_return_not_found_when_delete_given_non_existend_but_valid_id() throws Exception {
+        //given
+        ObjectId fakeId = new ObjectId();
+        //when
+        //then
+        mockMvc
+                .perform(
+                        delete("/companies/" + fakeId)
+                )
                 .andExpect(status().isNotFound());
     }
+
 }

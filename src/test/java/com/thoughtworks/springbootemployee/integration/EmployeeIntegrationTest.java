@@ -2,6 +2,7 @@ package com.thoughtworks.springbootemployee.integration;
 
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -69,11 +70,21 @@ class EmployeeIntegrationTest {
     }
 
     @Test
-    void should_return_not_found_when_get_one_given_invalid_id_in_path() throws Exception {
+    void should_return_bad_request_when_get_one_given_invalid_id_in_path() throws Exception {
         //given
         //when
         //then
         mockMvc.perform(get("/employees/100000"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void should_return_not_found_when_get_one_given_non_existent_but_valid_id_in_path() throws Exception {
+        //given
+        ObjectId fakeId = new ObjectId();
+        //when
+        //then
+        mockMvc.perform(get("/employees/" + fakeId))
                 .andExpect(status().isNotFound());
     }
 
@@ -216,7 +227,7 @@ class EmployeeIntegrationTest {
     }
 
     @Test
-    void should_return_not_found_when_update_given_invalid_id() throws Exception {
+    void should_return_bad_request_when_update_given_invalid_id() throws Exception {
         //given
         String updateAsJson = "{\n" +
                 "    \"name\": \"Calvinnnn\",\n" +
@@ -231,6 +242,29 @@ class EmployeeIntegrationTest {
         mockMvc
                 .perform(
                         put("/employees/10000")
+                                .contentType(APPLICATION_JSON)
+                                .content(updateAsJson)
+                )
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void should_return_not_found_when_update_given_non_existent_but_valid_id() throws Exception {
+        //given
+        ObjectId fakeId = new ObjectId();
+        String updateAsJson = "{\n" +
+                "    \"name\": \"Calvinnnn\",\n" +
+                "    \"age\": 23,\n" +
+                "    \"gender\": \"male\",\n" +
+                "    \"salary\": 19999,\n" +
+                "    \"companyId\": \"1\"\n" +
+                "}";
+
+        //when
+        //then
+        mockMvc
+                .perform(
+                        put("/employees/" + fakeId)
                                 .contentType(APPLICATION_JSON)
                                 .content(updateAsJson)
                 )
@@ -273,13 +307,26 @@ class EmployeeIntegrationTest {
     }
 
     @Test
-    void should_return_not_found_when_delete_given_invalid_id() throws Exception {
+    void should_return_bad_request_when_delete_given_invalid_id() throws Exception {
         //given
         //when
         //then
         mockMvc
                 .perform(
                         delete("/employees/1000")
+                )
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void should_return_not_found_when_delete_given_non_existent_but_valid_id() throws Exception {
+        //given
+        ObjectId fakeId = new ObjectId();
+        //when
+        //then
+        mockMvc
+                .perform(
+                        delete("/employees/" + fakeId)
                 )
                 .andExpect(status().isNotFound());
     }

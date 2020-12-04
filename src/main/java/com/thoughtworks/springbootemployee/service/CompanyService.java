@@ -47,14 +47,8 @@ public class CompanyService {
     }
 
     public void remove(String id) throws ResourceNotFoundException {
-        try {
-            if (companyRepository.findById(id).isPresent()) {
-                companyRepository.deleteById(id);
-                return;
-            }
-        }
-        catch(Exception ignore) {}
-        throw new ResourceNotFoundException();
+        companyRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+        companyRepository.deleteById(id);
     }
 
     public Company update(String id, Company updatedCompany) throws ResourceNotFoundException {
