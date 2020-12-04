@@ -69,7 +69,7 @@ class CompanyIntegrationTest {
         Company company1 = new Company("Tesla");
         Company expected1 = companyRepository.save(company1);
         Company company2 = new Company("SpaceX");
-        Company expected2 = companyRepository.save(company2);
+        companyRepository.save(company2);
         Employee employee = new Employee("Calvin", 19, "male", 999, expected1.getId());
         employeeRepository.save(employee);
 
@@ -91,11 +91,6 @@ class CompanyIntegrationTest {
     @Test
     void should_return_not_found_when_get_one_given_invalid_id_in_path() throws Exception {
         //given
-        Company company1 = new Company("Tesla");
-        Company expected1 = companyRepository.save(company1);
-        Company company2 = new Company("SpaceX");
-        Company expected2 = companyRepository.save(company2);
-
         //when
         //then
         mockMvc.perform(get("/companies/100000"))
@@ -181,12 +176,8 @@ class CompanyIntegrationTest {
     @Test
     void should_return_updated_company_when_update_given_original_company_in_list() throws Exception {
         //given
-        companyRepository.save(new Company("paypal"));
-        companyRepository.save(new Company("tesla"));
         Company company = new Company("spacex");
         Company expected = companyRepository.save(company);
-        companyRepository.save(new Company("boring"));
-        companyRepository.save(new Company("openai"));
 
         String updateAsJson = "{\n" +
                 "    \"companyName\": \"super spacex, mars ltd.\"\n" +
@@ -210,9 +201,6 @@ class CompanyIntegrationTest {
     @Test
     void should_return_not_found_when_update_given_invalid_id() throws Exception {
         //given
-        companyRepository.save(new Company("paypal"));
-        companyRepository.save(new Company("tesla"));
-
         String updateAsJson = "{\n" +
                 "    \"companyName\": \"super spacex, mars ltd.\"\n" +
                 "}";
