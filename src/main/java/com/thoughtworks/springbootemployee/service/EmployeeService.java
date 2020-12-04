@@ -40,15 +40,14 @@ public class EmployeeService {
         return employeeRepository.findAllByGender(gender);
     }
 
-    public Employee update(String id, Employee updatedEmployee) throws EmployeeNotFoundException {
-        employeeRepository.findById(id).orElseThrow(EmployeeNotFoundException::new);
-        updatedEmployee.setId(id);
-        employeeRepository.save(updatedEmployee);
-        return updatedEmployee;
-    }
-
     public void remove(String id) throws EmployeeNotFoundException {
         employeeRepository.findById(id).orElseThrow(EmployeeNotFoundException::new);
         employeeRepository.deleteById(id);
+    }
+
+    public Employee update(String id, Employee updatedEmployee) throws EmployeeNotFoundException {
+        employeeRepository.findById(id).orElseThrow(EmployeeNotFoundException::new);
+        updatedEmployee.setId(id);
+        return employeeRepository.save(updatedEmployee);
     }
 }

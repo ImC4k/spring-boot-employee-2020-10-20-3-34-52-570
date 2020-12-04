@@ -54,7 +54,6 @@ public class CompanyService {
     public Company update(String id, Company updatedCompany) throws CompanyNotFoundException {
         companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
         updatedCompany.setId(id);
-        companyRepository.save(updatedCompany);
-        return updatedCompany;
+        return companyRepository.save(updatedCompany);
     }
 }
