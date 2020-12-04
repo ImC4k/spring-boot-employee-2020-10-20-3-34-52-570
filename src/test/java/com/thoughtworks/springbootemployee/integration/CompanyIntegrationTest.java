@@ -32,6 +32,7 @@ class CompanyIntegrationTest {
     @AfterEach
     void tearDown() {
         companyRepository.deleteAll();
+        employeeRepository.deleteAll();
     }
 
     @Test

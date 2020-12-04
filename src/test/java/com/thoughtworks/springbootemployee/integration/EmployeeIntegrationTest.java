@@ -156,7 +156,6 @@ class EmployeeIntegrationTest {
     @Test
     void should_return_employee_when_create_employee_given_new_employee() throws Exception {
         //given
-        employeeRepository.deleteAll();
         Employee expected = new Employee("John", 23, "male", 19999, "1");
         String employeeAsJson = "{\n" +
                 "    \"name\": \"John\",\n" +
