@@ -19,16 +19,12 @@ public class CompanyService {
 
     public List<CompanyResponse> getAll() {
         List<Company> companies = companyRepository.findAll();
-        return companies.stream().map(companyCreate -> {
-            List<Employee> employees = getEmployeesFrom(companyCreate.getId());
-            return new CompanyResponse(companyCreate.getId(), companyCreate.getCompanyName(), employees);
-        }).collect(Collectors.toList());
+        return companies.stream().map(this::createResponseFrom).collect(Collectors.toList());
     }
 
     public CompanyResponse getOne(String id) throws CompanyNotFoundException {
         Company company = companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
-        List<Employee> employeesFromThisCompany = getEmployeesFrom(company.getId());
-        return new CompanyResponse(company.getId(), company.getCompanyName(), employeesFromThisCompany);
+        return createResponseFrom(company);
     }
 
     public List<CompanyResponse> getWithPagination(int pageNumber, int pageSize) {
@@ -55,5 +51,10 @@ public class CompanyService {
         companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
         updatedCompany.setId(id);
         return companyRepository.save(updatedCompany);
+    }
+
+    private CompanyResponse createResponseFrom(Company company) {
+        List<Employee> employees = getEmployeesFrom(company.getId());
+        return new CompanyResponse(company.getId(), company.getCompanyName(), employees);
     }
 }
