@@ -17,17 +17,15 @@ public class CompanyService {
     @Autowired private CompanyRepository companyRepository;
     @Autowired private EmployeeRepository employeeRepository;
 
-    public List<CompanyResponse> getAll() {
-        List<Company> companies = companyRepository.findAll();
-        return companies.stream().map(this::createResponseFrom).collect(Collectors.toList());
+    public List<Company> getAll() {
+        return companyRepository.findAll();
     }
 
-    public CompanyResponse getOne(String id) throws CompanyNotFoundException {
-        Company company = companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
-        return createResponseFrom(company);
+    public Company getOne(String id) throws CompanyNotFoundException {
+        return companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
     }
 
-    public List<CompanyResponse> getWithPagination(int pageNumber, int pageSize) {
+    public List<Company> getWithPagination(int pageNumber, int pageSize) {
         return getAll().stream()
                 .skip((long) pageNumber * pageSize)
                 .limit(pageSize)
@@ -51,10 +49,5 @@ public class CompanyService {
         companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
         updatedCompany.setId(id);
         return companyRepository.save(updatedCompany);
-    }
-
-    private CompanyResponse createResponseFrom(Company company) {
-        List<Employee> employees = getEmployeesFrom(company.getId());
-        return new CompanyResponse(company.getId(), company.getCompanyName(), employees);
     }
 }

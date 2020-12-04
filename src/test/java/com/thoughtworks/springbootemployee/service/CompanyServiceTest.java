@@ -51,7 +51,7 @@ class CompanyServiceTest {
         when(companyRepository.findAll()).thenReturn(expected);
 
         //when
-        final List<CompanyResponse> companyCreateList = companyService.getAll();
+        final List<Company> companyCreateList = companyService.getAll();
 
         //then
         assertEquals(1, companyCreateList.size());
@@ -64,7 +64,7 @@ class CompanyServiceTest {
         when(companyRepository.findById(any())).thenReturn(Optional.of(expected));
 
         //when
-        final CompanyResponse actual = companyService.getOne("123");
+        final Company actual = companyService.getOne("123");
 
         //then
         assertEquals(expected.getId(), actual.getId());
@@ -89,7 +89,7 @@ class CompanyServiceTest {
         when(companyRepository.findAll()).thenReturn(createDummyCompanyies());
 
         //when
-        List<CompanyResponse> actual = companyService.getWithPagination(0, 3);
+        List<Company> actual = companyService.getWithPagination(0, 3);
 
         //then
         assertEquals(3, actual.size());
