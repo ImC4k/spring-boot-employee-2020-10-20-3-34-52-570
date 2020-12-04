@@ -29,24 +29,12 @@ public class CompanyResponse {
         return companyName;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
     public Integer getEmployeesNumber() {
         return employeesNumber;
     }
 
-    public void setEmployeesNumber(Integer employeesNumber) {
-        this.employeesNumber = employeesNumber;
-    }
-
     public List<EmployeeResponseWithoutCompanyId> getEmployees() {
         return employees;
-    }
-
-    public void setEmployees(List<EmployeeResponseWithoutCompanyId> employees) {
-        this.employees = employees;
     }
 
     @Override
