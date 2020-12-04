@@ -48,13 +48,7 @@ public class EmployeeService {
     }
 
     public void remove(String id) throws ResourceNotFoundException {
-        try {
-            if (employeeRepository.findById(id).isPresent()) {
-                employeeRepository.deleteById(id);
-                return;
-            }
-        }
-        catch(Exception ignore) {}
-        throw new ResourceNotFoundException();
+        employeeRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+        employeeRepository.deleteById(id);
     }
 }

@@ -4,6 +4,7 @@ import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,11 +90,21 @@ class CompanyIntegrationTest {
     }
 
     @Test
-    void should_return_not_found_when_get_one_given_invalid_id_in_path() throws Exception {
+    void should_return_bad_request_when_get_one_given_invalid_id_in_path() throws Exception {
         //given
         //when
         //then
         mockMvc.perform(get("/companies/100000"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void should_return_not_found_when_get_one_given_non_existent_but_valid_id_in_path() throws Exception {
+        //given
+        ObjectId fakeId = new ObjectId();
+        //when
+        //then
+        mockMvc.perform(get("/companies/" + fakeId))
                 .andExpect(status().isNotFound());
     }
 
@@ -199,7 +210,7 @@ class CompanyIntegrationTest {
     }
 
     @Test
-    void should_return_not_found_when_update_given_invalid_id() throws Exception {
+    void should_return_bad_request_when_update_given_invalid_id() throws Exception {
         //given
         String updateAsJson = "{\n" +
                 "    \"companyName\": \"super spacex, mars ltd.\"\n" +
@@ -210,6 +221,24 @@ class CompanyIntegrationTest {
         mockMvc
                 .perform(
                         put("/companies/10000")
+                                .contentType(APPLICATION_JSON)
+                                .content(updateAsJson)
+                )
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void should_return_not_found_when_update_given_invalid_id() throws Exception {
+        //given
+        String updateAsJson = "{\n" +
+                "    \"companyName\": \"super spacex, mars ltd.\"\n" +
+                "}";
+        ObjectId fakeId = new ObjectId();
+        //when
+        //then
+        mockMvc
+                .perform(
+                        put("/companies/" + fakeId)
                                 .contentType(APPLICATION_JSON)
                                 .content(updateAsJson)
                 )

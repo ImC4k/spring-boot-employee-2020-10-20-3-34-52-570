@@ -22,15 +22,8 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Employee> getOne(@PathVariable String id) {
-        try {
-            Employee employee =  employeeService.getOne(id);
-            if (employee != null) {
-                return new ResponseEntity<>(employee, HttpStatus.OK);
-            }
-        }
-        catch (Exception ignored) {}
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    public Employee getOne(@PathVariable String id) throws ResourceNotFoundException {
+        return employeeService.getOne(id);
     }
 
     @GetMapping(params = {"page", "pageSize"})
@@ -50,26 +43,14 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Employee> updateEmployee(@PathVariable String id, @RequestBody Employee employeeUpdate) {
-        try {
-            Employee updatedEmployee = employeeService.update(id, employeeUpdate);
-            if (updatedEmployee != null) {
-                return new ResponseEntity<>(updatedEmployee, HttpStatus.OK);
-            }
-        }
-        catch (Exception ignored) {}
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    public Employee updateEmployee(@PathVariable String id, @RequestBody Employee employeeUpdate) throws ResourceNotFoundException {
+        return employeeService.update(id, employeeUpdate);
+
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEmployee(@PathVariable String id) throws ResourceNotFoundException{
         employeeService.remove(id);
-    }
-
-    @ExceptionHandler(ResourceNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public void handleResourceNotFoundException() {
-
     }
 }

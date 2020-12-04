@@ -25,15 +25,8 @@ public class CompanyController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CompanyResponse> getOne(@PathVariable String id) {
-        try {
-            CompanyResponse createdCompany = companyService.getOne(id);
-            if (createdCompany != null) {
-                return new ResponseEntity<>(createdCompany, HttpStatus.OK);
-            }
-        }
-        catch (Exception ignored){}
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    public CompanyResponse getOne(@PathVariable String id) throws ResourceNotFoundException {
+        return companyService.getOne(id);
     }
 
     @GetMapping(params = {"page", "pageSize"})
@@ -53,26 +46,13 @@ public class CompanyController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Company> updateCompany(@PathVariable String id, @RequestBody Company companyUpdate) {
-        try {
-            Company updatedCompany = companyService.update(id, companyUpdate);
-            if (updatedCompany != null) {
-                return new ResponseEntity<>(updatedCompany, HttpStatus.OK);
-            }
-        }
-        catch(Exception ignored) {}
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    public Company updateCompany(@PathVariable String id, @RequestBody Company companyUpdate) throws ResourceNotFoundException {
+        return companyService.update(id, companyUpdate);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCompany(@PathVariable String id) throws ResourceNotFoundException {
         companyService.remove(id);
-    }
-
-    @ExceptionHandler(ResourceNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public void handleResourceNotFoundException() {
-
     }
 }

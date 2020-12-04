@@ -26,7 +26,6 @@ public class CompanyService {
     }
 
     public CompanyResponse getOne(String id) throws ResourceNotFoundException {
-
         Company company = companyRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
         List<Employee> employeesFromThisCompany = getEmployeesFrom(company.getId());
         return new CompanyResponse(company.getId(), company.getCompanyName(), employeesFromThisCompany);
