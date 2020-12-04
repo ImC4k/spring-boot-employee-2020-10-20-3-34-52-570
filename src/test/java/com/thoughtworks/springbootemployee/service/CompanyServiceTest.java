@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.service;
 
-import com.thoughtworks.springbootemployee.exception.ResourceNotFoundException;
+import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
+import com.thoughtworks.springbootemployee.exception.EmployeeNotFoundException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.CompanyResponse;
 import com.thoughtworks.springbootemployee.model.Employee;
@@ -58,7 +59,7 @@ class CompanyServiceTest {
     }
 
     @Test
-    void should_return_the_company_when_getOne_given_a_valid_company_id() throws ResourceNotFoundException {
+    void should_return_the_company_when_getOne_given_a_valid_company_id() throws CompanyNotFoundException {
         //given
         Company expected = new Company("123", "test");
         when(companyRepository.findById(any())).thenReturn(Optional.of(expected));
@@ -74,14 +75,13 @@ class CompanyServiceTest {
     @Test
     void should_throw_ResourceNotFoundException_when_getOne_given_a_invalid_company_id() {
         //given
-        Company expected = new Company("123", "test");
         when(companyRepository.findById("456")).thenReturn(Optional.empty());
 
         //when
-        Exception exception = assertThrows(ResourceNotFoundException.class, () -> companyService.getOne("456"));
+        Exception exception = assertThrows(CompanyNotFoundException.class, () -> companyService.getOne("456"));
 
         //then
-        assertEquals("Resource not found", exception.getMessage());
+        assertEquals("Company not found", exception.getMessage());
     }
 
     @Test
@@ -137,7 +137,7 @@ class CompanyServiceTest {
     }
 
     @Test
-    void should_return_updated_company_when_update_given_new_company_and_even_though_update_company_id_mismatch() throws ResourceNotFoundException {
+    void should_return_updated_company_when_update_given_new_company_and_even_though_update_company_id_mismatch() throws CompanyNotFoundException {
         //given
         Company updatedCompany = new Company("3", "new name");
         Company expected = new Company("2", "new name");
@@ -161,19 +161,19 @@ class CompanyServiceTest {
         when(companyRepository.findById(any())).thenReturn(Optional.empty());
 
         //when
-        Exception exception = assertThrows(ResourceNotFoundException.class, () -> companyService.update("5", updatedCompany));
+        Exception exception = assertThrows(CompanyNotFoundException.class, () -> companyService.update("5", updatedCompany));
 
         //then
-        assertEquals("Resource not found", exception.getMessage());
+        assertEquals("Company not found", exception.getMessage());
     }
 
     @Test
     void should_throw_ResourceNotFoundException_and_have_a_company_removed_when_remove() {
         //given
         //when
-        Exception exception = assertThrows(ResourceNotFoundException.class, () -> companyService.remove("1"));
+        Exception exception = assertThrows(CompanyNotFoundException.class, () -> companyService.remove("1"));
 
         //then
-        assertEquals("Resource not found", exception.getMessage());
+        assertEquals("Company not found", exception.getMessage());
     }
 }

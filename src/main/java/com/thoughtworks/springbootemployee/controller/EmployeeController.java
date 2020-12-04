@@ -1,11 +1,10 @@
 package com.thoughtworks.springbootemployee.controller;
 
-import com.thoughtworks.springbootemployee.exception.ResourceNotFoundException;
+import com.thoughtworks.springbootemployee.exception.EmployeeNotFoundException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public Employee getOne(@PathVariable String id) throws ResourceNotFoundException {
+    public Employee getOne(@PathVariable String id) throws EmployeeNotFoundException {
         return employeeService.getOne(id);
     }
 
@@ -43,14 +42,14 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    public Employee updateEmployee(@PathVariable String id, @RequestBody Employee employeeUpdate) throws ResourceNotFoundException {
+    public Employee updateEmployee(@PathVariable String id, @RequestBody Employee employeeUpdate) throws EmployeeNotFoundException {
         return employeeService.update(id, employeeUpdate);
 
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteEmployee(@PathVariable String id) throws ResourceNotFoundException{
+    public void deleteEmployee(@PathVariable String id) throws EmployeeNotFoundException {
         employeeService.remove(id);
     }
 }

@@ -1,6 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
-import com.thoughtworks.springbootemployee.exception.ResourceNotFoundException;
+import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.CompanyResponse;
 import com.thoughtworks.springbootemployee.model.Employee;
@@ -25,8 +25,8 @@ public class CompanyService {
         }).collect(Collectors.toList());
     }
 
-    public CompanyResponse getOne(String id) throws ResourceNotFoundException {
-        Company company = companyRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+    public CompanyResponse getOne(String id) throws CompanyNotFoundException {
+        Company company = companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
         List<Employee> employeesFromThisCompany = getEmployeesFrom(company.getId());
         return new CompanyResponse(company.getId(), company.getCompanyName(), employeesFromThisCompany);
     }
@@ -46,13 +46,13 @@ public class CompanyService {
         return companyRepository.save(newCompany);
     }
 
-    public void remove(String id) throws ResourceNotFoundException {
-        companyRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+    public void remove(String id) throws CompanyNotFoundException {
+        companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
         companyRepository.deleteById(id);
     }
 
-    public Company update(String id, Company updatedCompany) throws ResourceNotFoundException {
-        companyRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+    public Company update(String id, Company updatedCompany) throws CompanyNotFoundException {
+        companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
         updatedCompany.setId(id);
         companyRepository.save(updatedCompany);
         return updatedCompany;
