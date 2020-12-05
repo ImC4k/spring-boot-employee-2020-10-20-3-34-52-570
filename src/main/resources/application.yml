@@ -2,3 +2,6 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/testdb
+api:
+  management:
+    key: eyJhcHAiOiIxOTg6NDM5IiwidmVyIjoiMi4wIiwib3JnIjoiODg6MTAwMiIsImlhdCI6MTYwNjc4MDgwMH0.MVWHsmrZb0cJHfTcYHcqmL_28S80e2GQ2g9Ljc4uI8E
