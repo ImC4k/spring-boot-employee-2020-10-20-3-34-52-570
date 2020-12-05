@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.context.annotation.*;
 
 @Configuration
-public class IncomingRequestInterceptor extends WebMvcConfigurerAdapter {
+public class IncomingRequestInterceptor implements WebMvcConfigurer {
     @Value("${api.management.key}") String managementKey;
     @Bean
     public Filter moesifFilter() {
