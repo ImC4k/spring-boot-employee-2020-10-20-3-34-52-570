@@ -2,15 +2,14 @@ package com.thoughtworks.springbootemployee.mapper;
 
 import com.thoughtworks.springbootemployee.dto.CompanyRequest;
 import com.thoughtworks.springbootemployee.dto.CompanyResponse;
+import com.thoughtworks.springbootemployee.dto.EmployeeResponseWithoutCompanyId;
 import com.thoughtworks.springbootemployee.model.Company;
-import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.CompanyService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class CompanyMapper {
@@ -25,8 +24,7 @@ public class CompanyMapper {
         return company;
     }
 
-    public CompanyResponse toResponse(Company company) {
-        List<Employee> employees = companyService.getEmployeesFrom(company.getId());
-        return new CompanyResponse(company.getId(), company.getCompanyName(), employees.stream().map(employeeMapper::toResponseWithoutCompanyId).collect(Collectors.toList()));
+    public CompanyResponse toResponse(Company company, List<EmployeeResponseWithoutCompanyId> employeeResponseWithoutCompanyId) {
+        return new CompanyResponse(company.getId(), company.getCompanyName(), employeeResponseWithoutCompanyId);
     }
 }
